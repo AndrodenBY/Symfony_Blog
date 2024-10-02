@@ -6,10 +6,13 @@ use App\Entity\Blog;
 use App\Form\BlogType;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use mysql_xdevapi\Result;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 #[Route('/blog')]
 final class BlogController extends AbstractController
@@ -17,10 +20,11 @@ final class BlogController extends AbstractController
     #[Route(name: 'app_blog_index', methods: ['GET'])]
     public function index(BlogRepository $blogRepository): Response
     {
-        return $this->render('blog/index.html.twig', [
+        return $this->render('blog/homepage.html.twig', [
             'blogs' => $blogRepository->findAll(),
         ]);
     }
+//'blogs' => $blogRepository->findAll()
 
     #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -46,6 +50,20 @@ final class BlogController extends AbstractController
     public function show(Blog $blog): Response
     {
         return $this->render('blog/show.html.twig', [
+            'blog' => $blog,
+        ]);
+    }
+    #[Route('{/{id}}/page', name: 'app_blog_page', methods: ['GET'])]
+    public function page(BlogRepository $blogRepository, int $id): Response
+    {
+        // Получаем блог с id = 1
+        $blog = $blogRepository->find($id);
+
+        if (!$blog) {
+            throw $this->createNotFoundException('Blog not found');
+        }
+
+        return $this->render('blog/page.html.twig', [
             'blog' => $blog,
         ]);
     }

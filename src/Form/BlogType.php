@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Author;
 use App\Entity\Blog;
+use App\Entity\Comment;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +18,12 @@ class BlogType extends AbstractType
             ->add('title')
             ->add('description')
             ->add('text')
+            ->add('comments', EntityType::class, [
+                'class' => Comment::class,
+                'choice_label' => 'content',
+                'multiple' => true, // Если нужно выбрать несколько комментариев
+                'expanded' => true,  // Если хотите использовать радиокнопки или чекбоксы
+            ])
             ->add('author', EntityType::class, [
                 'class' => Author::class,
                 'choice_label' => 'id',

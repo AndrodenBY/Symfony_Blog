@@ -16,6 +16,9 @@ class Comment
     #[ORM\ManyToOne(inversedBy: 'comments')]
     private ?Blog $blog = null;
 
+    #[ORM\Column]
+    private ?string $content = null;
+
     #[ORM\Column(nullable: true)]
     private ?int $likes = null;
 
@@ -60,6 +63,17 @@ class Comment
     {
         $this->author = $author;
 
+        return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(?string $content): static
+    {
+        $this->content = $content;
         return $this;
     }
 }

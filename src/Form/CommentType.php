@@ -16,6 +16,7 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('likes')
+            ->add('content')
             ->add('blog', EntityType::class, [
                 'class' => Blog::class,
                 'choice_label' => 'id',

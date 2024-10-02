@@ -71,7 +71,7 @@ final class AuthorController extends AbstractController
     #[Route('/{id}', name: 'app_author_delete', methods: ['POST'])]
     public function delete(Request $request, Author $author, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$author->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $author->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($author);
             $entityManager->flush();
         }

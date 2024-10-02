@@ -23,6 +23,24 @@
                 <th>Text</th>
                 <td>{{ blog.text }}</td>
             </tr>
+            <tr>
+                <th>Comments</th>
+                <td>
+                    {% if blog.comments|length > 0 %}
+                        <ul>
+                            {% for comment in blog.comments %}
+                                <li>{{ comment.content }}</li> {# Предполагается, что у вашего комментария есть поле content #}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No comments available.</p>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Author</th>
+                <td>{{ blog.author.username }}</td>
+            </tr>
         </tbody>
     </table>
 

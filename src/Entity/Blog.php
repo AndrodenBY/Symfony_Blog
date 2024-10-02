@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
 class Blog
@@ -26,13 +27,14 @@ class Blog
     private ?string $text = null;
 
     /**
-     * @var Collection<int, Comment>
+     * @var ?Collection<int, Comment>
      */
+    #[Ignore]
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'blog')]
-    private Collection $comments;
+    private ?Collection $comments;
 
     #[ORM\ManyToOne(inversedBy: 'blogs')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Author $author = null;
 
     public function __construct()
@@ -82,9 +84,9 @@ class Blog
     }
 
     /**
-     * @return Collection<int, Comment>
+     * @return ?Collection<int, Comment>
      */
-    public function getComments(): Collection
+    public function getComments(): ?Collection
     {
         return $this->comments;
     }
