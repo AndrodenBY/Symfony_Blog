@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Blog;
 use App\Form\BlogType;
+use App\Repository\AuthorRepository;
 use App\Repository\BlogRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use mysql_xdevapi\Result;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,18 +55,21 @@ final class BlogController extends AbstractController
             'blog' => $blog,
         ]);
     }
-    #[Route('{/{id}}/page', name: 'app_blog_page', methods: ['GET'])]
-    public function page(BlogRepository $blogRepository, int $id): Response
+    #[Route('/{id}/page', name: 'app_blog_page', methods: ['GET'])]
+    public function page(BlogRepository $blogRepository, CommentRepository $commentRepository, int $id): Response
     {
-        // Получаем блог с id = 1
         $blog = $blogRepository->find($id);
 
         if (!$blog) {
             throw $this->createNotFoundException('Blog not found');
         }
 
+        $comments = $commentRepository->findByBlogAndAuthor($id);
+        //$comments = $commentRepository->findBy(['blog' => $blog]);
+
         return $this->render('blog/page.html.twig', [
             'blog' => $blog,
+            'comments' => $comments,
         ]);
     }
 

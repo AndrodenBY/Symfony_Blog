@@ -1,33 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Author index{% endblock %}
-
 {% block body %}
-    <h1>Author index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for author in authors %}
-            <tr>
-                <td>{{ author.id }}</td>
-                <td>
-                    <a href="{{ path('app_author_show', {'id': author.id}) }}">show</a>
-                    <a href="{{ path('app_author_edit', {'id': author.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_author_new') }}">Create new</a>
+<div class="container">
+    <div class="row">
+        <div class="col-12 mb-3 mb-lg-5">
+            <div class="overflow-hidden card table-nowrap table-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Authors</h5>
+                    <a href="#!" class="btn btn-light btn-sm">View All(NOT READY)</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="small text-uppercase bg-body text-muted">
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for author in authors %}
+                        <tr class="align-middle">
+                            <td>{{ author.username }}</td>
+                            <td>{{ author.email }}</td>
+                            <td>{{ author.roles | join(', ') }}</td>
+                            <td>
+                                <a href="{{ path('app_author_show', {'id': author.id}) }}">show</a>
+                                <a href="{{ path('app_author_edit', {'id': author.id}) }}">edit</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

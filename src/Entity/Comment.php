@@ -13,7 +13,7 @@ class Comment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\ManyToOne(targetEntity: Blog::class, inversedBy: 'comments')]
     private ?Blog $blog = null;
 
     #[ORM\Column]
@@ -22,7 +22,7 @@ class Comment
     #[ORM\Column(nullable: true)]
     private ?int $likes = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\ManyToOne(targetEntity: Author::class , inversedBy: 'comments')]
     private ?Author $author = null;
 
     public function getId(): ?int
