@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Author;
+use App\Entity\User;
 use App\Form\AuthorType;
-use App\Repository\AuthorRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/author')]
-final class AuthorController extends AbstractController
+final class UserController extends AbstractController
 {
     #[Route(name: 'app_author_index', methods: ['GET'])]
-    public function index(AuthorRepository $authorRepository): Response
+    public function index(UserRepository $authorRepository): Response
     {
 
         return $this->render('author/index.html.twig', [
@@ -26,7 +26,7 @@ final class AuthorController extends AbstractController
     #[Route('/new', name: 'app_author_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $author = new Author();
+        $author = new User();
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
 
@@ -44,7 +44,7 @@ final class AuthorController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_author_show', methods: ['GET'])]
-    public function show(Author $author): Response
+    public function show(User $author): Response
     {
         return $this->render('author/show.html.twig', [
             'author' => $author,
@@ -52,7 +52,7 @@ final class AuthorController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_author_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Author $author, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, User $author, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
@@ -70,7 +70,7 @@ final class AuthorController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_author_delete', methods: ['POST'])]
-    public function delete(Request $request, Author $author, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, User $author, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $author->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($author);

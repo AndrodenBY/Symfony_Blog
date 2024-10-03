@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Author;
+use App\Entity\User;
 use App\Entity\Blog;
 use App\Repository\BlogRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -29,7 +29,7 @@ class AuthorType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Author::class,
+            'data_class' => User::class,
         ]);
     }
 }

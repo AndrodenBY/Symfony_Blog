@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Blog;
 use App\Form\BlogType;
-use App\Repository\AuthorRepository;
+use App\Repository\UserRepository;
 use App\Repository\BlogRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;

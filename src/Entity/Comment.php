@@ -22,8 +22,8 @@ class Comment
     #[ORM\Column(nullable: true)]
     private ?int $likes = null;
 
-    #[ORM\ManyToOne(targetEntity: Author::class , inversedBy: 'comments')]
-    private ?Author $author = null;
+    #[ORM\ManyToOne(targetEntity: User::class , inversedBy: 'comments')]
+    private ?User $author = null;
 
     public function getId(): ?int
     {
@@ -54,12 +54,12 @@ class Comment
         return $this;
     }
 
-    public function getAuthor(): ?Author
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
 
-    public function setAuthor(?Author $author): static
+    public function setAuthor(?User $author): static
     {
         $this->author = $author;
 

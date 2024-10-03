@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Author;
+use App\Entity\User;
 use App\Entity\Blog;
 use App\Entity\Comment;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -22,7 +22,7 @@ class CommentType extends AbstractType
                 'choice_label' => 'id',
             ])
             ->add('author', EntityType::class, [
-                'class' => Author::class,
+                'class' => User::class,
                 'choice_label' => 'id',
             ])
         ;
