@@ -7,7 +7,7 @@
             <div class="col-12 mb-3 mb-lg-5">
                 <div class="overflow-hidden card table-nowrap table-card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Author</h5>
+                        <h5 class="mb-0">User</h5>
                     </div>
                     <div class="table-responsive">
                         <table class="table mb-0">
@@ -22,20 +22,20 @@
                             </thead>
                             <tbody>
                             <tr class="align-middle">
-                                <td>{{ author.id }}</td>
-                                <td>{{ author.username }}</td>
-                                <td>{{ author.email }}</td>
-                                <td>{{ author.roles | join(', ') }}</td>
-                                <td>{{ author.comments | map(comment => comment.content) | join(', ') }}</td>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.roles | join(', ') }}</td>
+                                <td>{{ user.comments | map(comment => comment.content) | join(', ') }}</td>
                             </tr>
                             </tbody>
                         </table>
 
                     </div>
                 </div>
-                <a href="{{ path('app_author_delete', { id: author.id }) }}" class="btn btn-danger">Delete</a> <!--Not working-->
+                <a href="{{ path('app_user_delete', { id: user.id }) }}" class="btn btn-danger">Delete</a> <!--Not working-->
                 <a href="{{ path('app_blog_index') }}" class="btn btn-link">Homepage</a>
-                <a href="{{ path('app_author_edit', {'id': author.id}) }}" class="btn btn-link">Edit</a>
+                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-link">Edit</a>
             </div>
         </div>
     </div>

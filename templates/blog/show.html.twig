@@ -29,7 +29,7 @@
                                     <td>{{ blog.description }}</td>
                                     <td>{{ blog.text }}</td>
                                     <td>{{ blog.comments | map(comment => comment.content) | join(', ') }}</td>
-                                    <td>{{ blog.author.email }}</td>
+                                    <td>{{ blog.user.email }}</td>
                                 </tr>
                             </tbody>
                         </table>

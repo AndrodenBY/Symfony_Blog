@@ -6,7 +6,7 @@
         <div class="col-12 mb-3 mb-lg-5">
             <div class="overflow-hidden card table-nowrap table-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Authors</h5>
+                    <h5 class="mb-0">Users</h5>
                     <a href="#!" class="btn btn-light btn-sm">View All(NOT READY)</a>
                 </div>
                 <div class="table-responsive">
@@ -20,14 +20,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for author in authors %}
+                        {% for user in users %}
                         <tr class="align-middle">
-                            <td>{{ author.username }}</td>
-                            <td>{{ author.email }}</td>
-                            <td>{{ author.roles | join(', ') }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.roles | join(', ') }}</td>
                             <td>
-                                <a href="{{ path('app_author_show', {'id': author.id}) }}">show</a>
-                                <a href="{{ path('app_author_edit', {'id': author.id}) }}">edit</a>
+                                <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
+                                <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
                             </td>
                         </tr>
                         {% endfor %}

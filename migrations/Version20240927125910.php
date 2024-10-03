@@ -20,14 +20,14 @@ final class Version20240927125910 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE author ADD roles JSON NOT NULL, ADD password VARCHAR(255) NOT NULL, CHANGE email email VARCHAR(180) NOT NULL');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_BDAFD8C8E7927C74 ON author (email)');
+        $this->addSql('ALTER TABLE user ADD roles JSON NOT NULL, ADD password VARCHAR(255) NOT NULL, CHANGE email email VARCHAR(180) NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_BDAFD8C8E7927C74 ON user (email)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP INDEX UNIQ_BDAFD8C8E7927C74 ON author');
-        $this->addSql('ALTER TABLE author DROP roles, DROP password, CHANGE email email VARCHAR(20) NOT NULL');
+        $this->addSql('DROP INDEX UNIQ_BDAFD8C8E7927C74 ON user');
+        $this->addSql('ALTER TABLE user DROP roles, DROP password, CHANGE email email VARCHAR(20) NOT NULL');
     }
 }

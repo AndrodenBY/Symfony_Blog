@@ -23,7 +23,7 @@ class Comment
     private ?int $likes = null;
 
     #[ORM\ManyToOne(targetEntity: User::class , inversedBy: 'comments')]
-    private ?User $author = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -54,14 +54,14 @@ class Comment
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getUser(): ?User
     {
-        return $this->author;
+        return $this->user;
     }
 
-    public function setAuthor(?User $author): static
+    public function setUser(?User $user): static
     {
-        $this->author = $author;
+        $this->user = $user;
 
         return $this;
     }

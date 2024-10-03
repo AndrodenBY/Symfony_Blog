@@ -20,12 +20,12 @@ final class Version20241003224343 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE author RENAME TO user');
+        $this->addSql('ALTER TABLE user RENAME TO user');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user RENAME TO author');
+        $this->addSql('ALTER TABLE user RENAME TO user');
     }
 }

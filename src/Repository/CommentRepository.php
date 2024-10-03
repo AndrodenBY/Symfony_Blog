@@ -20,9 +20,9 @@ class CommentRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->where('c.blog = :blogId') //Get comments for a particular blog by id
-            //->andWhere('c.author = :authorId')
+            //->andWhere('c.user = :userId')
             ->setParameter('blogId', $blogId) //Set comments connected to blog with particular id
-            //->setParameter('authorId', $authorId)
+            //->setParameter('userId', $userId)
             ->getQuery()
             ->getResult();
     }

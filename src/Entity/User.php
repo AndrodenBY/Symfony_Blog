@@ -39,14 +39,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var ?Collection<int, Blog>
      */
     #[Groups('selectAuthor')]
-    #[ORM\OneToMany(targetEntity: Blog::class, mappedBy: 'author')]
+    #[ORM\OneToMany(targetEntity: Blog::class, mappedBy: 'user')]
     private ?Collection $blogs;
 
     /**
      * @var ?Collection<int, Comment>
      */
     #[Ignore]
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'author')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user')]
     private ?Collection $comments;
 
     #[ORM\Column]
@@ -76,7 +76,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->blogs->contains($blog)) {
             $this->blogs->add($blog);
-            $blog->setAuthor($this);
+            $blog->setUser($this);
         }
 
         return $this;
@@ -86,8 +86,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->blogs->removeElement($blog)) {
             // set the owning side to null (unless already changed)
-            if ($blog->getAuthor() === $this) {
-                $blog->setAuthor(null);
+            if ($blog->getUser() === $this) {
+                $blog->setUser(null);
             }
         }
 
@@ -106,7 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
-            $comment->setAuthor($this);
+            $comment->setUser($this);
         }
 
         return $this;
@@ -116,8 +116,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getAuthor() === $this) {
-                $comment->setAuthor(null);
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
             }
         }
 

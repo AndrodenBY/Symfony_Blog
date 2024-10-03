@@ -35,7 +35,7 @@ class Blog
 
     #[ORM\ManyToOne(inversedBy: 'blogs')]
     #[ORM\JoinColumn(nullable: true)]
-    private ?User $author = null;
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -113,14 +113,14 @@ class Blog
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getUser(): ?User
     {
-        return $this->author;
+        return $this->user;
     }
 
-    public function setAuthor(?User $author): static
+    public function setUser(?User $user): static
     {
-        $this->author = $author;
+        $this->user = $user;
 
         return $this;
     }

@@ -24,7 +24,7 @@ class BlogType extends AbstractType
                 'multiple' => true, // Если нужно выбрать несколько комментариев
                 'expanded' => true,  // Если хотите использовать радиокнопки или чекбоксы
             ])
-            ->add('author', EntityType::class, [
+            ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
             ])

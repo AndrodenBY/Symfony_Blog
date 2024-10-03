@@ -21,7 +21,7 @@ class CommentType extends AbstractType
                 'class' => Blog::class,
                 'choice_label' => 'id',
             ])
-            ->add('author', EntityType::class, [
+            ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
             ])
