@@ -6,7 +6,7 @@ security:
     providers:
         app_user_provider:
             entity:
-                class: App\Entity\Author
+                class: App\Entity\User
                 property: email
         users_in_memory: { memory: null }
     firewalls:
@@ -22,6 +22,8 @@ security:
                 enable_csrf: true
             logout:
                 path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
                 # where to redirect after logout
                 # target: app_any_route
                 # where to redirect after logout

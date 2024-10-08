@@ -24,11 +24,11 @@
         {{ form_row(registrationForm.password.first, {'attr': {'class': 'form-control', 'placeholder': 'Create a password'}}) }}
         <small id="passwordHelp" class="form-text text-muted">Choose a strong password to keep your account secure.</small>
     </div>
-
     <div class="form-group">
         {{ form_row(registrationForm.password.second, {'attr': {'class': 'form-control', 'placeholder': 'Confirm your password'}}) }}
         <small id="confirmPasswordHelp" class="form-text text-muted">Please re-enter your password for confirmation.</small>
     </div>
+    <br>
     <div class="form-check mb-3">
         {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
         <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
@@ -37,4 +37,6 @@
     </div>
     <button type="submit" class="btn btn-primary btn-block">Register</button>
     {{ form_end(registrationForm) }}
+    <br>
+    <p>Do you already have an email? </p><a href="{{ path('app_login') }}">Click here to login</a>
 {% endblock %}
