@@ -4,6 +4,7 @@ namespace App\Controller\Auth;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Security\AppAuthenticator;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -20,15 +22,16 @@ class RegistrationController extends AbstractController
 {
     public function __construct(private EmailVerifier $emailVerifier)
     {
-        $this->emailVerifier = $emailVerifier;
+
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserAuthenticatorInterface $userAuthenticator,
+                             UserPasswordHasherInterface $userPasswordHasher,
+                             EntityManagerInterface $entityManager, AppAuthenticator $authenticator): Response
     {
-        if($this->getUser())
-        {
-            return $this->redirectToRoute('app_admin');
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_blog_homepage');
         }
 
         $user = new User();
@@ -38,25 +41,19 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $password */
             $password = $form->get('password')->getData();
-
-            // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $password));
+            $user->setVerified(true);
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('myblog@localhost.com', 'MailBot'))
-                    ->to((string) $user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            $userAuthenticator->authenticateUser(
+                $user,
+                $authenticator,
+                $request
             );
 
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('app_blog_index');
+            return $this->redirectToRoute('app_blog_homepage');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -69,7 +66,6 @@ class RegistrationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // validate email confirmation link, sets User::isVerified=true and persists
         try {
             /** @var User $user */
             $user = $this->getUser();

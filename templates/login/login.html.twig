@@ -1,9 +1,9 @@
-{% extends '../base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <form method="post">
+    <form action="{{ path('app_login') }}" method="post">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
@@ -13,7 +13,7 @@
                 You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
             </div>
         {% endif %}
-
+        <input  type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="username">Email</label>
         <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
@@ -33,10 +33,11 @@
                 <label for="_remember_me">Remember me</label>
             </div>
         #}
-
-        <button class="btn btn-lg btn-primary" type="submit">
+        <br>
+        <button class="btn btn-lg btn-primary" type="submit" href="{{ path('app_blog_homepage') }}">
             Sign in
         </button>
     </form>
+    <br>
     <p>You don't an account? <a href="{{ path('app_register') }}">Click here to register</a> </p>
 {% endblock %}

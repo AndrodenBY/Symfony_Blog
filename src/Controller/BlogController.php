@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 #[Route('/blog')]
 final class BlogController extends AbstractController
 {
-    #[Route(name: 'app_blog_index', methods: ['GET'])]
+    #[Route(name: 'app_blog_homepage', methods: ['GET'])]
     public function index(BlogRepository $blogRepository): Response
     {
         return $this->render('blog/homepage.html.twig', [
@@ -39,7 +39,7 @@ final class BlogController extends AbstractController
             $entityManager->persist($blog);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_blog_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_blog_homepage', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('blog/new.html.twig', [
@@ -82,7 +82,7 @@ final class BlogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_blog_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_blog_homepage', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('blog/edit.html.twig', [
@@ -99,6 +99,6 @@ final class BlogController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_blog_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_blog_homepage', [], Response::HTTP_SEE_OTHER);
     }
 }
