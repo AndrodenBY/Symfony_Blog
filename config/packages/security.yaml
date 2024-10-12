@@ -23,6 +23,7 @@ security:
                 enable_csrf: true
             logout:
                 path: app_logout
+                target: app_blog_homepage
                 # where to redirect after logout
                 # target: app_any_route
                 # where to redirect after logout

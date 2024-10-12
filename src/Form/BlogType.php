@@ -18,17 +18,12 @@ class BlogType extends AbstractType
             ->add('title')
             ->add('description')
             ->add('text')
-            ->add('comments', EntityType::class, [
-                'class' => Comment::class,
-                'choice_label' => 'content',
-                'multiple' => true, // Если нужно выбрать несколько комментариев
-                'expanded' => true,  // Если хотите использовать радиокнопки или чекбоксы
-            ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
-            ])
-        ;
+                'attr' => ['style' => 'display:none;'],
+                'mapped' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

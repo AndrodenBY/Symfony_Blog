@@ -26,12 +26,19 @@ final class BlogController extends AbstractController
             'blogs' => $blogRepository->findAll(),
         ]);
     }
-//'blogs' => $blogRepository->findAll()
 
     #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user)
+        {
+            return $this->redirectToRoute('app_login');
+        }
+
         $blog = new Blog();
+        $blog->setUser($user);
+
         $form = $this->createForm(BlogType::class, $blog);
         $form->handleRequest($request);
 
@@ -48,16 +55,22 @@ final class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_blog_show', methods: ['GET'])]
+    #[Route('/showId={id}', name: 'app_blog_show', methods: ['GET'])]
     public function show(Blog $blog): Response
     {
         return $this->render('blog/show.html.twig', [
             'blog' => $blog,
         ]);
     }
-    #[Route('/{id}/page', name: 'app_blog_page', methods: ['GET'])]
-    public function page(BlogRepository $blogRepository, CommentRepository $commentRepository, int $id): Response
+    #[Route('/{id}', name: 'app_blog_page', methods: ['GET'])]
+    public function page(BlogRepository $blogRepository, CommentRepository $commentRepository, string $id): Response
     {
+        $id = (int) $id;
+        if (!is_numeric($id))
+        {
+            throw new \InvalidArgumentException('ID must be an integer.');
+        }
+
         $blog = $blogRepository->find($id);
 
         if (!$blog) {
@@ -65,7 +78,6 @@ final class BlogController extends AbstractController
         }
 
         $comments = $commentRepository->findByBlogAndAuthor($id);
-        //$comments = $commentRepository->findBy(['blog' => $blog]);
 
         return $this->render('blog/page.html.twig', [
             'blog' => $blog,
@@ -100,5 +112,11 @@ final class BlogController extends AbstractController
         }
 
         return $this->redirectToRoute('app_blog_homepage', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/homepage/about', name: 'app_blog_about', methods: ['GET'])]
+    public function about(BlogRepository $blogRepository): Response
+    {
+        return $this->render('blog/about.html.twig');
     }
 }
