@@ -120,14 +120,14 @@ final class BlogController extends AbstractController
         return $this->render('blog/about.html.twig');
     }
 
-    #[Route('/search', name: 'app_blog_search', methods: ['GET'])]
+    #[Route('/search/q={$query}', name: 'app_blog_search', methods: ['GET'])]
     public function search(Request $request, BlogRepository $blogRepository): Response
     {
         $query = $request->query->get('q');
         $blogs = $blogRepository->searchByQuery($query);
 
         return $this->render('blog/search_query.html.twig', [
-            'blogs' => $blogs
+            'posts' => $blogs
         ]);
     }
 }
