@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Found{% endblock %}
+
+{% block body %}
+    {% for blog in posts %}
+        <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <a href="{{ path('blog_show', {id: blog.id}) }}">{{ blog.title }}</a>
+                {{ blog.body | slice(0, 255) ~ '...' }}
+            </p>
+        </div>
+    {% else %}
+        <p>Nothing is found.</p>
+    {% endfor %}
+    <small class="d-block text-right mt-3">
+        <a href="{{ path('app_blog_homepage') }}">Home</a>
+    </small>
+{% endblock %}
