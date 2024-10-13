@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3a057c36-d3a2-4095-9741-200ca5958ef3" name="Changes" comment="" />
+    <list default="true" id="3a057c36-d3a2-4095-9741-200ca5958ef3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/page.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/page.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/show.html.twig" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -227,7 +234,7 @@
       <workItem from="1728508185371" duration="3408000" />
       <workItem from="1728562953951" duration="19706000" />
       <workItem from="1728731161271" duration="1111000" />
-      <workItem from="1728836353333" duration="3835000" />
+      <workItem from="1728836353333" duration="10120000" />
     </task>
     <servers />
   </component>

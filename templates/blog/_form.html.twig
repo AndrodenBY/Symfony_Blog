@@ -1,6 +1,29 @@
 {{ form_start(form) }}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="border-radius: 15px; margin-top: 10px; margin-bottom: 20px;">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path('app_blog_homepage') }}">Blog</a>
+        <label class="navbar-text">Create/Edit Blog</label>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if blog is defined and blog.id is not null %}
+                    <li class="nav-item">
+                        <!-- Delete Form -->
+                        <form action="{{ path('app_blog_delete', { id: blog.id }) }}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-danger" style="margin-right: 10px" onclick="return confirm('Are you sure you want to delete this blog?');">Delete</button>
+                        </form>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <button type="submit" class="btn btn-primary">{{ button_label|default('Save Changes') }}</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="form-group">
     {{ form_label(form.title, 'Title') }}
     {{ form_widget(form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Lorem ipsum'} }) }}
@@ -15,8 +38,5 @@
 </div>
 
 {{ form_widget(form.user, { 'attr': {'style': 'display:none;'} }) }}
-<div class="d-flex justify-content-between mb-3" style="margin-top: 10px;">
-    <a class="btn btn-secondary" href="{{ path('app_blog_homepage') }}">Back</a>
-    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
-</div>
+
 {{ form_end(form) }}

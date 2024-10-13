@@ -13,13 +13,18 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Search form -->
-                <form class="d-flex ms-3" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search" style="border-radius: 20px">
+                <form class="d-flex ms-3" role="search" action="{{ path('app_blog_search') }}" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search..." aria-label="Search" style="border-radius: 20px">
                     <button class="btn btn-outline-light" type="submit" style="border-radius: 20px">Find</button>
                 </form>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="{{ path('app_blog_about') }}">About</a></li>
                     {% if app.user %}
+                        {% if blog.user.id == app.user.id %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_blog_edit', {id: blog.id}) }}">Edit Blog</a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_logout') }}">Log out</a>
                         </li>
@@ -43,7 +48,8 @@
                         <!-- Post title-->
                         <h1 class="fw-bolder mb-1">{{blog.title}}</h1>
                         <!-- Post meta content-->
-                        <div class="text-muted fst-italic mb-2">Posted on January 1, 2023 by Start Bootstrap</div>
+                        <div class="text-muted fst-italic mb-2">Posted by {{ blog.user.email }}</div>
+                        <div class="text-muted fst-italic mb-2">1st January</div>
                         <!-- Post categories-->
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
@@ -74,6 +80,7 @@
                                         </div>
                                         <div class="ms-3">
                                             <div class="fw-bold">{{ comment.user.username }}</div>
+                                            <div class="text-muted fst mb-2">{{ blog.user.email }}</div>
                                             {{ comment.content }}
                                         </div>
                                     </div>
