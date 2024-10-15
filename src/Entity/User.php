@@ -31,6 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string')]
     private ?string $password;
+
     #[Groups(['selectUser', 'selectAuthor'])]
     #[ORM\Column(length: 20)]
     private ?string $username = null;
@@ -51,6 +52,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $icon = 'https://securitysolutions.me/wp-content/uploads/2018/12/dummy-person.jpg';
 
     public function __construct()
     {
@@ -210,5 +214,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): static
+    {
+        $this->icon = $icon;
+        return $this;
+    }
+
 
 }

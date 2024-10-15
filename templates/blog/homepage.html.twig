@@ -51,7 +51,7 @@
             <div class="col-lg-8">
                 <!-- Featured blog post-->
                 <div class="card mb-4">
-                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                    <a href="#!"><img class="card-img-top" src="https://americanathleticshoe.com/cdn/shop/t/23/assets/placeholder_2048x.png?v=113555733946226816651665571258" alt="..." /></a>
                     <div class="card-body">
                         <div class="small text-muted">January 1, 2023</div>
                         <h2 class="card-title">Featured Post Title</h2>
@@ -66,9 +66,10 @@
                         <div class="blog-list">
                             {% for blog in blogs %}
                                 <div class="card">
-                                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                                    <a href="#!"><img class="card-img-top" src={{ blog.image }} alt="..." /></a> <!--"https://americanathleticshoe.com/cdn/shop/t/23/assets/placeholder_2048x.png?v=113555733946226816651665571258"-->
                                     <div class="card-body">
-                                        <!--<div class="small text-muted">{ blog.createdAt|date('F j, Y') }</div>-->
+                                        <div class="small text-muted">{{ blog.publishedAt|date('F j, Y') }}</div>
+                                        <div class="small text-muted">By {{ blog.user.email }}</div>
                                         <h2 class="card-title h4">{{ blog.title }}</h2>
                                         <p class="card-text">{{ blog.description }}</p>
                                         <a class="btn btn-primary" href="{{ path('app_blog_page', { id: blog.id }) }}">Read more →</a>

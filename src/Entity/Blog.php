@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\DomCrawler\Image;
 use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
 class Blog
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -26,11 +28,23 @@ class Blog
     #[ORM\Column(type: Types::TEXT)]
     private ?string $text = null;
 
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'blogs',)]
+    #[ORM\Column(nullable: true)]
+    #[ORM\JoinTable(name: 'blog_categories')]
+    private ?Collection $categories;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $publishedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $image = 'https://americanathleticshoe.com/cdn/shop/t/23/assets/placeholder_2048x.png?v=113555733946226816651665571258';
+
     /**
      * @var ?Collection<int, Comment>
      */
     #[Ignore]
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'blog')]
+    #[ORM\Column(nullable: true)]
     private ?Collection $comments;
 
     #[ORM\ManyToOne(inversedBy: 'blogs')]
@@ -40,6 +54,7 @@ class Blog
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,9 +62,39 @@ class Blog
         return $this->id;
     }
 
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+        return $this;
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addBlog($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeBlog($this);
+        }
+
+        return $this;
     }
 
     public function setTitle(string $title): static
@@ -91,6 +136,17 @@ class Blog
         return $this->comments;
     }
 
+    public function getCategories(): ?Collection
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(?Collection $categories): static
+    {
+        $this->categories = $categories;
+        return $this;
+    }
+
     public function addComment(Comment $comment): static
     {
         if (!$this->comments->contains($comment)) {
@@ -122,6 +178,16 @@ class Blog
     {
         $this->user = $user;
 
+        return $this;
+    }
+
+    public function getPublishedAt(): ?\DateTime
+    {
+        return $this->publishedAt;
+    }
+    public function setPublishedAt(?\DateTime $publishedAt): self
+    {
+        $this->publishedAt = $publishedAt;
         return $this;
     }
 }

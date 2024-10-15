@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Blog;
 use App\Form\BlogType;
+use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Repository\BlogRepository;
 use App\Repository\CommentRepository;
@@ -28,7 +29,8 @@ final class BlogController extends AbstractController
     }
 
     #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,
+                        CategoryRepository $categoryRepository): Response
     {
         $user = $this->getUser();
         if (!$user)
@@ -39,7 +41,11 @@ final class BlogController extends AbstractController
         $blog = new Blog();
         $blog->setUser($user);
 
-        $form = $this->createForm(BlogType::class, $blog);
+        $categories = $categoryRepository->findAll() ?: [];
+
+        $form = $this->createForm(BlogType::class, $blog, [
+            'categories' => $categories,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
