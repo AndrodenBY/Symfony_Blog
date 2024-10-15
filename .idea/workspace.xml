@@ -5,6 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a057c36-d3a2-4095-9741-200ca5958ef3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeception.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/phpspec.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/migrations/Version20241014170642.php" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/migrations/Version20241014225006.php" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/migrations/Version20241014230006.php" afterDir="false" />
@@ -258,7 +260,7 @@
       <workItem from="1728731161271" duration="1111000" />
       <workItem from="1728836353333" duration="13927000" />
       <workItem from="1728925511833" duration="3783000" />
-      <workItem from="1729007845458" duration="6971000" />
+      <workItem from="1729007845458" duration="7314000" />
     </task>
     <servers />
   </component>
