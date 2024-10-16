@@ -19,7 +19,7 @@ class Category
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Blog::class, mappedBy: 'categories')]
-    private Collection $blogs;
+    private ?Collection $blogs;
 
     public function __construct()
     {
@@ -37,7 +37,6 @@ class Category
             $this->blogs[] = $blog;
             $blog->addCategory($this);
         }
-
         return $this;
     }
 
@@ -46,7 +45,6 @@ class Category
         if ($this->blogs->removeElement($blog)) {
             $blog->removeCategory($this);
         }
-
         return $this;
     }
 

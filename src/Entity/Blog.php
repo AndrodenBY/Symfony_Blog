@@ -13,7 +13,6 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
 class Blog
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -37,7 +36,11 @@ class Blog
     private ?\DateTime $publishedAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?string $image = 'https://americanathleticshoe.com/cdn/shop/t/23/assets/placeholder_2048x.png?v=113555733946226816651665571258';
+    private ?string $image = 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg';
+
+    #[ORM\ManyToOne(inversedBy: 'blogs')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $user = null;
 
     /**
      * @var ?Collection<int, Comment>
@@ -46,10 +49,6 @@ class Blog
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'blog')]
     #[ORM\Column(nullable: true)]
     private ?Collection $comments;
-
-    #[ORM\ManyToOne(inversedBy: 'blogs')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?User $user = null;
 
     public function __construct()
     {
@@ -62,39 +61,9 @@ class Blog
         return $this->id;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
-        return $this;
-    }
-
     public function getTitle(): ?string
     {
         return $this->title;
-    }
-
-    public function addCategory(Category $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addBlog($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        if ($this->categories->removeElement($category)) {
-            $category->removeBlog($this);
-        }
-
-        return $this;
     }
 
     public function setTitle(string $title): static
@@ -128,23 +97,73 @@ class Blog
         return $this;
     }
 
+    public function getPublishedAt(): ?\DateTime
+    {
+        return $this->publishedAt;
+    }
+    public function setPublishedAt(?\DateTime $publishedAt): self
+    {
+        $this->publishedAt = $publishedAt;
+        return $this;
+    }
+
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(Collection $categories): self
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     /**
      * @return ?Collection<int, Comment>
      */
     public function getComments(): ?Collection
     {
         return $this->comments;
-    }
-
-    public function getCategories(): ?Collection
-    {
-        return $this->categories;
-    }
-
-    public function setCategories(?Collection $categories): static
-    {
-        $this->categories = $categories;
-        return $this;
     }
 
     public function addComment(Comment $comment): static
@@ -166,28 +185,6 @@ class Blog
             }
         }
 
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getPublishedAt(): ?\DateTime
-    {
-        return $this->publishedAt;
-    }
-    public function setPublishedAt(?\DateTime $publishedAt): self
-    {
-        $this->publishedAt = $publishedAt;
         return $this;
     }
 }

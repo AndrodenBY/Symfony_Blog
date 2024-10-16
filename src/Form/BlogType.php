@@ -6,9 +6,13 @@ use App\Entity\Category;
 use App\Entity\User;
 use App\Entity\Blog;
 use App\Entity\Comment;
+use App\Form\DataTransformer\CategoryTransformer;
+use App\Repository\BlogRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\DBAL\Types\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -19,6 +23,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class BlogType extends AbstractType
 {
+    /*public function __construct(private readonly CategoryTransformer $transformer)
+    {
+    }*/
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -28,18 +36,19 @@ class BlogType extends AbstractType
             ->add('description', SymfonyTextType::class, [
                 'constraints' => [new NotBlank(['message' => 'Description is required'])],
             ])
-            ->add('text', SymfonyTextType
-            ::class, [
+            ->add('text', SymfonyTextType::class, [
                 'constraints' => [new NotBlank(['message' => 'Text is required'])],
             ])
-            ->add('categories', ChoiceType::class, [
-                'choices' => $options['categories'], //*array_flip*
+            ->add('categories', EntityType::class, [
+                'class' => Category::class,
+                'choices' => $options['categories'],
+                'choice_label' => 'name',
                 'label' => 'Category',
                 'placeholder' => 'Select a category',
                 'multiple' => true,
                 'expanded' => false,
+                'required' => false,
                 'attr' => ['class' => 'form-control'],
-                'constraints' => [new NotBlank(['message' => 'Category is required'])],
             ])
             ->add('image', SymfonyTextType::class, [
                 'required' => false,
@@ -57,8 +66,11 @@ class BlogType extends AbstractType
                 'attr' => ['style' => 'display:none;'],
                 'mapped' => false,
             ]);
+
+        //$builder->get('categories')->addModelTransformer($this->transformer);
     }
-    public function configureOptions(OptionsResolver $resolver): void
+
+public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Blog::class,

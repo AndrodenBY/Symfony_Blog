@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private bool $isVerified = false;
 
     #[ORM\Column(nullable: true)]
-    private ?string $icon = 'https://securitysolutions.me/wp-content/uploads/2018/12/dummy-person.jpg';
+    private ?string $icon = 'https://www.masterson.com.au/wp-content/uploads/2016/10/dummy-profile-pic-male1.jpg';
 
     public function __construct()
     {

@@ -66,7 +66,7 @@
                         <div class="blog-list">
                             {% for blog in blogs %}
                                 <div class="card">
-                                    <a href="#!"><img class="card-img-top" src={{ blog.image }} alt="..." /></a> <!--"https://americanathleticshoe.com/cdn/shop/t/23/assets/placeholder_2048x.png?v=113555733946226816651665571258"-->
+                                    <a href="#!"><img class="card-img-top" src={{ blog.image }} alt="..." /></a> <!--http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg-->
                                     <div class="card-body">
                                         <div class="small text-muted">{{ blog.publishedAt|date('F j, Y') }}</div>
                                         <div class="small text-muted">By {{ blog.user.email }}</div>
@@ -133,6 +133,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-6">
+
                                 <ul class="list-unstyled mb-0">
                                     <li><a href="#!">Web Design</a></li>
                                     <li><a href="#!">HTML</a></li>
@@ -146,6 +147,7 @@
                                     <li><a href="#!">Tutorials</a></li>
                                 </ul>
                             </div>
+
                         </div>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[Route('/blog')]
 final class BlogController extends AbstractController
@@ -28,26 +29,23 @@ final class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,
-                        CategoryRepository $categoryRepository): Response
+    #[Route('/blog/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
         $user = $this->getUser();
-        if (!$user)
-        {
+        if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
         $blog = new Blog();
         $blog->setUser($user);
 
-        $categories = $categoryRepository->findAll() ?: [];
-
+        $categories = $categoryRepository->findAll();
         $form = $this->createForm(BlogType::class, $blog, [
             'categories' => $categories,
         ]);
-        $form->handleRequest($request);
 
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($blog);
             $entityManager->flush();
@@ -57,7 +55,7 @@ final class BlogController extends AbstractController
 
         return $this->render('blog/new.html.twig', [
             'blog' => $blog,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

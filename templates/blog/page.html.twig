@@ -76,7 +76,7 @@
                                 {% for comment in comments %}
                                     <div class="d-flex mb-4">
                                         <div class="flex-shrink-0">
-                                            <img class="rounded-circle" src="{{ comment.user.profilePictureUrl ?? 'default.jpg' }}" alt="..." />
+                                            <img class="rounded-circle img-thumbnail" src="{{ comment.user.icon ?? 'https://www.masterson.com.au/wp-content/uploads/2016/10/dummy-profile-pic-male1.jpg' }}" alt="..." style="width: 40px; height: 40px;" />
                                         </div>
                                         <div class="ms-3">
                                             <div class="fw-bold">{{ comment.user.username }}</div>
