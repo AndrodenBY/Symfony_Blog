@@ -8,6 +8,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Repository\BlogRepository;
 use App\Repository\CommentRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use mysql_xdevapi\Result;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,12 +25,20 @@ final class BlogController extends AbstractController
     #[Route(name: 'app_blog_homepage', methods: ['GET'])]
     public function index(BlogRepository $blogRepository): Response
     {
+        $blogs = $blogRepository->findAll();
+        //dd($blogs);
+        foreach ($blogs as $blog) {
+            if (!($blog->getCategories() instanceof Collection)) {
+                throw new \Exception('Categories is not a Collection');
+            }
+        }
+
         return $this->render('blog/homepage.html.twig', [
-            'blogs' => $blogRepository->findAll(),
+            'blogs' => $blogs,
         ]);
     }
 
-    #[Route('/blog/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
         $user = $this->getUser();
@@ -41,6 +50,11 @@ final class BlogController extends AbstractController
         $blog->setUser($user);
 
         $categories = $categoryRepository->findAll();
+        $categoryCollection = new ArrayCollection($categories);
+        $blog->setCategories($categoryCollection);
+        if (!$categories) {
+            $categories = [];
+        }
         $form = $this->createForm(BlogType::class, $blog, [
             'categories' => $categories,
         ]);

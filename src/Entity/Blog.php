@@ -28,7 +28,7 @@ class Blog
     private ?string $text = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'blogs',)]
-    #[ORM\Column(nullable: true)]
+    //#[ORM\Column(nullable: true)]
     #[ORM\JoinTable(name: 'blog_categories')]
     private ?Collection $categories;
 
