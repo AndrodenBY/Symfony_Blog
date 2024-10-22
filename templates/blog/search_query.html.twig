@@ -38,12 +38,12 @@
 
         <!-- Main content area -->
         <div class="container mt-5 flex-grow-1"> <!-- Allow content to grow -->
-            {% if posts is empty %}
+            {% if blogs is empty %}
                 <p>Nothing is found.</p>
             {% else %}
                 <h2 style="margin-bottom: 15px">Results</h2>
                 <div class="row">
-                    {% for blog in posts %}
+                    {% for blog in blogs %}
                         <div class="col-md-4 mb-4"> <!-- Card column -->
                             <div class="card">
                                 <a href="{{ path('app_blog_page', {id: blog.id}) }}">

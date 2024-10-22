@@ -25,6 +25,15 @@ class BlogRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByAuthor(string $author)
+    {
+        return $this->createQueryBuilder('blog')
+            ->where('blog.user = :user')
+            ->setParameter('user', $author)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Blog[] Returns an array of Blog objects
     //     */

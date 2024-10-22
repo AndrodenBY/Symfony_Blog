@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use mysql_xdevapi\Result;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,6 +49,7 @@ final class BlogController extends AbstractController
 
         $blog = new Blog();
         $blog->setUser($user);
+        $blog->setPublishedAt(new \DateTime());
 
         $categories = $categoryRepository->findAll();
         $categoryCollection = new ArrayCollection($categories);
@@ -74,20 +76,23 @@ final class BlogController extends AbstractController
     }
 
     #[Route('/showId={id}', name: 'app_blog_show', methods: ['GET'])]
-    public function show(Blog $blog): Response
+    public function show(BlogRepository $blogRepository, CommentRepository $commentRepository, int $id): Response
     {
+        $blog = $blogRepository->find($id);
+        if (!$blog) {
+            throw $this->createNotFoundException('Blog not found');
+        }
+
+        $comments = $commentRepository->findBy(['blog' => $blog]);
+
         return $this->render('blog/show.html.twig', [
             'blog' => $blog,
+            'comments' => $comments,
         ]);
     }
-    #[Route('/{id}', name: 'app_blog_page', methods: ['GET'])]
-    public function page(BlogRepository $blogRepository, CommentRepository $commentRepository, string $id): Response
+    #[Route('/{id<\d+>}', name: 'app_blog_page', methods: ['GET'])]
+    public function page(BlogRepository $blogRepository, CommentRepository $commentRepository, int $id): Response
     {
-        $id = (int) $id;
-        if (!is_numeric($id))
-        {
-            throw new \InvalidArgumentException('ID must be an integer.');
-        }
 
         $blog = $blogRepository->find($id);
 
@@ -111,20 +116,19 @@ final class BlogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
             return $this->redirectToRoute('app_blog_homepage', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('blog/edit.html.twig', [
             'blog' => $blog,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/{id}', name: 'app_blog_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_blog_delete', methods: ['POST'])]
     public function delete(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->request->get('_token'))) {
             $entityManager->remove($blog);
             $entityManager->flush();
         }
@@ -138,6 +142,23 @@ final class BlogController extends AbstractController
         return $this->render('blog/about.html.twig');
     }
 
+    #[Route('/my-blogs', name: 'app_blog_my_blogs', methods: ['GET'])]
+    public function myBlogs(BlogRepository $blogRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $blogs = $blogRepository->findBy(['user' => $user]);
+
+        return $this->render('blog/my_blogs.html.twig', [
+            'blogs' => $blogs,
+        ]);
+    }
+
+
+
     #[Route('/search/q={$query}', name: 'app_blog_search', methods: ['GET'])]
     public function search(Request $request, BlogRepository $blogRepository): Response
     {
@@ -145,7 +166,7 @@ final class BlogController extends AbstractController
         $blogs = $blogRepository->searchByQuery($query);
 
         return $this->render('blog/search_query.html.twig', [
-            'posts' => $blogs
+            'blogs' => $blogs
         ]);
     }
 }

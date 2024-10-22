@@ -20,12 +20,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType as SymfonyTextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 class BlogType extends AbstractType
 {
-    /*public function __construct(private readonly CategoryTransformer $transformer)
-    {
-    }*/
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -46,7 +45,7 @@ class BlogType extends AbstractType
                 'label' => 'Category',
                 'placeholder' => 'Select a category',
                 'multiple' => true,
-                'expanded' => false,
+                'expanded' => true,
                 'required' => false,
                 'attr' => ['class' => 'form-control'],
             ])
@@ -66,8 +65,6 @@ class BlogType extends AbstractType
                 'attr' => ['style' => 'display:none;'],
                 'mapped' => false,
             ]);
-
-        //$builder->get('categories')->addModelTransformer($this->transformer);
     }
 
 public function configureOptions(OptionsResolver $resolver): void

@@ -71,7 +71,15 @@
                     <div class="card bg-light">
                         <div class="card-body">
                             <!-- Comment form-->
-                            <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
+                            {% if app.user %}
+                                <form action="{{ path('app_comment_new', {blogId: blog.id}) }}" method="post" class="mb-4">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('comment') }}">
+                                    <textarea class="form-control" rows="3" name="comment" placeholder="Join the discussion and leave a comment!"></textarea>
+                                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                                </form>
+                            {% else %}
+                                <p>You need to <a href="{{ path('app_login') }}">log in</a> to leave a comment.</p>
+                            {% endif %}
                             <div class="comments-section">
                                 {% for comment in comments %}
                                     <div class="d-flex mb-4">

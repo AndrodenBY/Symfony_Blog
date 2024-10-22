@@ -47,8 +47,7 @@ class Blog
      */
     #[Ignore]
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'blog')]
-    #[ORM\Column(nullable: true)]
-    private ?Collection $comments;
+    private ?Collection $comments = null;
 
     public function __construct()
     {

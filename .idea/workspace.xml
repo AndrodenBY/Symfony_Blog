@@ -5,12 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a057c36-d3a2-4095-9741-200ca5958ef3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/blog/my_blogs.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/twig.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/twig.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/BlogController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/BlogController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/CommentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CommentController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Blog.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Blog.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/BlogType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/BlogType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/BlogRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/BlogRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/_form.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/blog/homepage.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/homepage.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/blog/page.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/page.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/blog/search_query.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/search_query.html.twig" afterDir="false" />
@@ -25,6 +30,13 @@
     <execution>
       <executable path="composer" />
     </execution>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -203,6 +215,9 @@
       <recent name="$PROJECT_DIR$/public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/src/Form/DataTransformer" />
       <recent name="$PROJECT_DIR$/src/Serializer" />
     </key>
   </component>
@@ -243,7 +258,9 @@
       <workItem from="1728836353333" duration="13927000" />
       <workItem from="1728925511833" duration="3783000" />
       <workItem from="1729007845458" duration="10216000" />
-      <workItem from="1729087847399" duration="2170000" />
+      <workItem from="1729087847399" duration="20858000" />
+      <workItem from="1729443498022" duration="10116000" />
+      <workItem from="1729503246657" duration="8939000" />
     </task>
     <servers />
   </component>
