@@ -25,6 +25,16 @@ class BlogRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByCategory(string $category)
+    {
+        return $this->createQueryBuilder('blog')
+            ->join('blog.categories', 'category')
+            ->where('category.name = :category')
+            ->setParameter('category', $category)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByAuthor(string $author)
     {
         return $this->createQueryBuilder('blog')

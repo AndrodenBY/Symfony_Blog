@@ -24,9 +24,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 final class BlogController extends AbstractController
 {
     #[Route(name: 'app_blog_homepage', methods: ['GET'])]
-    public function index(BlogRepository $blogRepository): Response
+    public function index(BlogRepository $blogRepository, CategoryRepository $categoryRepository): Response
     {
         $blogs = $blogRepository->findAll();
+        $categories = $categoryRepository->findAll();
         //dd($blogs);
         foreach ($blogs as $blog) {
             if (!($blog->getCategories() instanceof Collection)) {
@@ -36,6 +37,7 @@ final class BlogController extends AbstractController
 
         return $this->render('blog/homepage.html.twig', [
             'blogs' => $blogs,
+            'categories' => $categories,
         ]);
     }
 
@@ -91,10 +93,12 @@ final class BlogController extends AbstractController
         ]);
     }
     #[Route('/{id<\d+>}', name: 'app_blog_page', methods: ['GET'])]
-    public function page(BlogRepository $blogRepository, CommentRepository $commentRepository, int $id): Response
+    public function page(BlogRepository $blogRepository, CommentRepository $commentRepository,
+                         CategoryRepository $categoryRepository, int $id): Response
     {
 
         $blog = $blogRepository->find($id);
+        $categories = $categoryRepository->findAll();
 
         if (!$blog) {
             throw $this->createNotFoundException('Blog not found');
@@ -105,6 +109,7 @@ final class BlogController extends AbstractController
         return $this->render('blog/page.html.twig', [
             'blog' => $blog,
             'comments' => $comments,
+            'categories' => $categories,
         ]);
     }
 
@@ -157,6 +162,15 @@ final class BlogController extends AbstractController
         ]);
     }
 
+    #[Route('/blog/category/{category}', name: 'app_blog_category')]
+    public function findByCategory(string $category, BlogRepository $blogRepository): Response
+    {
+        $blogs = $blogRepository->findByCategory($category);
+        return $this->render('blog/category.html.twig', [
+            'blogs' => $blogs,
+            'category' => $category,
+        ]);
+    }
 
 
     #[Route('/search/q={$query}', name: 'app_blog_search', methods: ['GET'])]

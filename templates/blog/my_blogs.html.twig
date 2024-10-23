@@ -29,12 +29,38 @@
             </div>
         </div>
     </nav>
-    <div class="container mt-5 flex-grow-1"> </div>
+    <div class="container mt-5 flex-grow-1"> <!-- Allow content to grow -->
         {% if blogs is empty %}
-        <p>No blogs found.</p>
+            <p>Nothing is found.</p>
+        {% else %}
+            <h2 style="margin-bottom: 15px">My Blogs</h2>
+            <div class="row">
+                {% for blog in blogs %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <a href="{{ path('app_blog_page', {id: blog.id}) }}">
+                                <img class="card-img-top" src={{ blog.image }} alt="{{ blog.title }}" />
+                            </a>
+                            <div class="card-body justify-content-center">
+                                <h2 class="card-title h4">{{ blog.title }}</h2>
+                                <p class="card-text">{{ blog.description }}</p>
+                                {{ include('blog/_delete_form.html.twig') }}
+                                <button class="btn btn-outline-danger me-2" form="delete-form" onclick="submitDeleteForm(event); return false;">Delete</button>
+                                <a class="btn btn-outline-warning me-2" href="{{ path('app_blog_edit', {id: blog.id}) }}">Edit</a>
+                                <a class="btn btn-outline-primary" href="{{ path('app_blog_page', {id: blog.id}) }}">Read</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
-
-        <h2 style="margin-bottom: 15px">My Blogs</h2>
     </div>
-
+</div>
+    <!-- Footer-->
+    <footer class="py-5 bg-dark" style="border-radius: 15px; margin-bottom: 10px;">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
+        </div>
+    </footer>
     {% endblock %}
+
