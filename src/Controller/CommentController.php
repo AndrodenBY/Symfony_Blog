@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Blog;
 use App\Entity\Comment;
 use App\Form\CommentType;
+use App\Repository\BlogRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,31 +27,76 @@ final class CommentController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_comment_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,  CsrfTokenManagerInterface $csrfTokenManager): Response
+    /*#[Route('/new', name: 'app_comment_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager,
+                        CsrfTokenManagerInterface $csrfTokenManager): Response
     {
-        $token = new CsrfToken('comment', $request->request->get('_csrf_token'));
+        $comment = new Comment();
+        $user = $this->getUser();
+        $blogId = $request->request->get('blog_id');
+        if (!$blogId) {
+            throw $this->createNotFoundException('Blog ID is missing.');
+        }
+        $blog = $entityManager->getRepository(Blog::class)->find($blogId);
+        if (!$user || !$blog) {
+            throw $this->createNotFoundException('User or Blog not found.');
+        }
 
+        $comment->setUser($user);
+        $comment->setBlog($blog);
+
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $token = new CsrfToken('comment', $request->request->get('_csrf_token'));
+            if (!$csrfTokenManager->isTokenValid($token)) {
+                throw new InvalidCsrfTokenException('Invalid CSRF token.');
+            }
+
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_blog_page', ['id' => $blog->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('comment/new.html.twig', [
+            'comment' => $comment,
+            'form' => $form->createView(),
+            'blog' => $blog,
+        ]);
+    }*/
+
+    #[Route('/add', name: 'app_comment_add', methods: ['POST'])]
+    public function addCommentAction(Request $request, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $blogId = $request->request->get('blog_id');
+        $blog = $entityManager->getRepository(Blog::class)->find($blogId);
+        if (!$blog) {
+            throw $this->createNotFoundException('Blog not found.');
+        }
+
+        $token = new CsrfToken('comment', $request->request->get('_csrf_token'));
         if (!$csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException('Invalid CSRF token.');
         }
 
         $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
+        $comment->setUser($user);
+        $comment->setBlog($blog);
+        $comment->setContent($request->request->get('content'));
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($comment);
-            $entityManager->flush();
+        $entityManager->persist($comment);
+        $entityManager->flush();
 
-            return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('comment/new.html.twig', [
-            'comment' => $comment,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('app_blog_page', ['id' => $blog->getId()], Response::HTTP_SEE_OTHER);
     }
+
 
     #[Route('/{id}', name: 'app_comment_show', methods: ['GET'])]
     public function show(Comment $comment): Response

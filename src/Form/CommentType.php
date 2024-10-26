@@ -15,15 +15,20 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('likes')
+            ->add('likes', null, [
+                'required' => false,
+            ])
             ->add('content')
             ->add('blog', EntityType::class, [
                 'class' => Blog::class,
-                'choice_label' => 'id',
+                'choice_label' => 'title',
+                'attr' => ['style' => 'display:none;'],
             ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'id',
+                'choice_label' => 'username',
+                'attr' => ['style' => 'display:none;'],
+                'mapped' => false,
             ]);
     }
 

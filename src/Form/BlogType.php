@@ -40,7 +40,6 @@ class BlogType extends AbstractType
             ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
-                //'choices' => $options['categories'],
                 'choice_label' => 'name',
                 'label' => 'Category',
                 'placeholder' => 'Select a category',

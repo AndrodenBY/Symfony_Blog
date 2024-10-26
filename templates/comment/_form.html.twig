@@ -1,4 +1,13 @@
-{{ form_start(form) }}
+{% extends 'base.html.twig' %}
+
+{% block title %}New Comment{% endblock %}
+
+{% block body %}
+    <h1>Create New Comment</h1>
+    {{ form_start(form, {'attr': {'id': 'create-comment-form'}}) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+    <input type="hidden" name="blog_id" value="{{ blog.id }}">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('comment') }}">
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+{% endblock %}

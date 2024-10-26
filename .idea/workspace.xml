@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a057c36-d3a2-4095-9741-200ca5958ef3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/blog/category.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/styles/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/BlogController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/BlogController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/BlogRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/BlogRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/my_blogs.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/my_blogs.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/page.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/page.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/BlogType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/BlogType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/CommentType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CommentType.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,7 +249,7 @@
       <workItem from="1729007845458" duration="10216000" />
       <workItem from="1729087847399" duration="20858000" />
       <workItem from="1729443498022" duration="10116000" />
-      <workItem from="1729503246657" duration="13696000" />
+      <workItem from="1729503246657" duration="14332000" />
     </task>
     <servers />
   </component>

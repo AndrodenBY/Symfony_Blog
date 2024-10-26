@@ -21,8 +21,8 @@ class AuthorType extends AbstractType
             ->add('blogs', EntityType::class, [
                 'class' => Blog::class,
                 'choice_label' => 'title',
-                'multiple' => true, // Если нужно выбрать несколько блогов
-                'expanded' => true,  // Если хотите использовать радиокнопки или чекбоксы
+                'multiple' => true,
+                'expanded' => true,
             ]);
     }
 

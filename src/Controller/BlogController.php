@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Blog;
+use App\Entity\Comment;
 use App\Form\BlogType;
+use App\Form\CommentType;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Repository\BlogRepository;
@@ -92,26 +94,66 @@ final class BlogController extends AbstractController
             'comments' => $comments,
         ]);
     }
-    #[Route('/{id<\d+>}', name: 'app_blog_page', methods: ['GET'])]
-    public function page(BlogRepository $blogRepository, CommentRepository $commentRepository,
-                         CategoryRepository $categoryRepository, int $id): Response
+    /*#[Route('/{id<\d+>}', name: 'app_blog_page', methods: ['GET', 'POST'])]
+    public function page(Request $request, BlogRepository $blogRepository, CommentRepository $commentRepository, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager, int $id): Response
     {
-
         $blog = $blogRepository->find($id);
-        $categories = $categoryRepository->findAll();
-
         if (!$blog) {
             throw $this->createNotFoundException('Blog not found');
         }
 
         $comments = $commentRepository->findByBlogAndAuthor($id);
+        $categories = $categoryRepository->findAll();
+
+        $comment = new Comment();
+        $user = $this->getUser();
+
+        $comment->setBlog($blog);
+        $comment->setUser($user);
+
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_blog_page', ['id' => $blog->getId()]);
+        }
 
         return $this->render('blog/page.html.twig', [
             'blog' => $blog,
             'comments' => $comments,
             'categories' => $categories,
+            'form' => $form->createView(),
+        ]);
+    }*/
+
+    #[Route('/{id<\d+>}', name: 'app_blog_page', methods: ['GET'])]
+    public function page(BlogRepository $blogRepository, CommentRepository $commentRepository, CategoryRepository $categoryRepository, int $id): Response
+    {
+        $blog = $blogRepository->find($id);
+        $categories = $categoryRepository->findAll();
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+
+        if (!$blog) {
+            throw $this->createNotFoundException('Blog not found');
+        }
+
+        $comments = $commentRepository->findBy(['blog' => $blog]);
+        $blogCategories = $blog->getCategories();
+        $allCategories = $categoryRepository->findAll();
+
+
+        return $this->render('blog/page.html.twig', [
+            'blog' => $blog,
+            'comments' => $comments,
+            'blogCategories' => $blogCategories,
+            'allCategories' => $allCategories,
+            'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/{id}/edit', name: 'app_blog_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response

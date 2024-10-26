@@ -14,7 +14,7 @@ class LoginController extends AbstractController
     {
         if ($this->getUser())
         {
-            return $this->redirectToRoute('app_blog_homepage'); //app_admin
+            return $this->redirectToRoute('app_blog_homepage');
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();

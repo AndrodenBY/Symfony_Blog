@@ -28,7 +28,6 @@ class Blog
     private ?string $text = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'blogs',)]
-    //#[ORM\Column(nullable: true)]
     #[ORM\JoinTable(name: 'blog_categories')]
     private ?Collection $categories;
 
@@ -178,7 +177,6 @@ class Blog
     public function removeComment(Comment $comment): static
     {
         if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
             if ($comment->getBlog() === $this) {
                 $comment->setBlog(null);
             }

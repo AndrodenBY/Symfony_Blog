@@ -41,22 +41,23 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-8">
-                <!-- Post content-->
+                <!-- Blog content-->
                 <article>
-                    <!-- Post header-->
+                    <!-- Blog header-->
                     <header class="mb-4">
-                        <!-- Post title-->
+                        <!-- Blog title-->
                         <h1 class="fw-bolder mb-1">{{blog.title}}</h1>
-                        <!-- Post meta content-->
+                        <!-- Blog meta content-->
                         <div class="text-muted fst-italic mb-2">Posted by {{ blog.user.email }}</div>
                         <div class="small text-muted">{{ blog.publishedAt|date('F j, Y') }}</div>
-                        <!-- Post categories-->
-                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                        <!-- Blog categories-->
+                        {% for category in blogCategories %}
+                            <a class="badge bg-primary text-decoration-none link-light" href="{{ path('app_blog_category', {'category': category.name}) }}">{{ category.name }}</a>
+                        {% endfor %}
                     </header>
                     <!-- Preview image figure-->
                     <figure class="mb-4"><img class="img-fluid rounded" src={{ blog.image }} alt="..." /></figure>
-                    <!-- Post content-->
+                    <!-- Blog content-->
                     <section class="mb-5">
                         <p class="fs-5 mb-4">{{ blog.text }}</p>
                         <p class="fs-5 mb-4">The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.</p>
@@ -70,16 +71,20 @@
                 <section class="mb-5">
                     <div class="card bg-light">
                         <div class="card-body">
+
                             <!-- Comment form-->
                             {% if app.user %}
-                                <form action="{{ path('app_comment_new', {blogId: blog.id}) }}" method="post" class="mb-4">
+                                <form id="comment-form" action="{{ path('app_comment_add', {'blogId': blog.id}) }}" method="post" class="mb-4">
                                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('comment') }}">
-                                    <textarea class="form-control" rows="3" name="comment" placeholder="Join the discussion and leave a comment!"></textarea>
+                                    <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                                    <textarea class="form-control mb-3" rows="3" name="content" placeholder="Join the discussion and leave a comment!" id="comment-content"></textarea>
                                     <button type="submit" class="btn btn-primary mt-3">Submit</button>
                                 </form>
-                            {% else %}
+                                {% else %}
                                 <p>You need to <a href="{{ path('app_login') }}">log in</a> to leave a comment.</p>
                             {% endif %}
+
+                            <!--Comments section-->
                             <div class="comments-section">
                                 {% for comment in comments %}
                                     <div class="d-flex mb-4">
@@ -88,7 +93,7 @@
                                         </div>
                                         <div class="ms-3">
                                             <div class="fw-bold">{{ comment.user.username }}</div>
-                                            <div class="text-muted fst mb-2">{{ blog.user.email }}</div>
+                                            <div class="text-muted fst mb-2">{{ comment.user.email }}</div>
                                             {{ comment.content }}
                                         </div>
                                     </div>
@@ -109,7 +114,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <ul class="list-unstyled mb-0">
-                                    {% for category in categories %}
+                                    {% for category in allCategories %}
                                         <li><a href="{{ path('app_blog_category', {'category': category.name}) }}">{{ category.name }}</a></li>
                                     {% endfor %}
                                 </ul>

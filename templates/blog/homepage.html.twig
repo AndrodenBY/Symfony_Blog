@@ -66,7 +66,7 @@
                         <div class="blog-list">
                             {% for blog in blogs %}
                                 <div class="card">
-                                    <a href="#!"><img class="card-img-top" src={{ blog.image }} alt="..." /></a> <!--http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg-->
+                                    <a href="#!"><img class="card-img-top" src={{ blog.image }} alt="..." /></a>
                                     <div class="card-body">
                                         <div class="small text-muted">{{ blog.publishedAt|date('F j, Y') }}</div>
                                         <div class="small text-muted">By {{ blog.user.email }}</div>
@@ -75,7 +75,7 @@
                                         <p class="card-text">
                                             Categories:
                                             {% for category in blog.categories %}
-                                                {{ category.name }}
+                                                {{ category.name }}{% if not loop.last %}, {% endif %}
                                             {% endfor %}
                                         </p>
                                         <a class="btn btn-primary" href="{{ path('app_blog_page', { id: blog.id }) }}">Read more →</a>
