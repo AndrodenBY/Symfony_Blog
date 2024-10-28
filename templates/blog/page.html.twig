@@ -95,12 +95,16 @@
                                             <div class="fw-bold">{{ comment.user.username }}</div>
                                             <div class="text-muted fst mb-2">{{ comment.user.email }}</div>
                                             {{ comment.content }}
+                                            {% if app.user and app.user.id == comment.user.id %}
+                                                {{ include('comment/_delete_form.html.twig') }}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 {% else %}
                                     <p>No comments available.</p>
                                 {% endfor %}
                             </div>
+
                         </div>
                     </div>
                 </section>

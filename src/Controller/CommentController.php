@@ -27,46 +27,6 @@ final class CommentController extends AbstractController
         ]);
     }
 
-    /*#[Route('/new', name: 'app_comment_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,
-                        CsrfTokenManagerInterface $csrfTokenManager): Response
-    {
-        $comment = new Comment();
-        $user = $this->getUser();
-        $blogId = $request->request->get('blog_id');
-        if (!$blogId) {
-            throw $this->createNotFoundException('Blog ID is missing.');
-        }
-        $blog = $entityManager->getRepository(Blog::class)->find($blogId);
-        if (!$user || !$blog) {
-            throw $this->createNotFoundException('User or Blog not found.');
-        }
-
-        $comment->setUser($user);
-        $comment->setBlog($blog);
-
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $token = new CsrfToken('comment', $request->request->get('_csrf_token'));
-            if (!$csrfTokenManager->isTokenValid($token)) {
-                throw new InvalidCsrfTokenException('Invalid CSRF token.');
-            }
-
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_blog_page', ['id' => $blog->getId()], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('comment/new.html.twig', [
-            'comment' => $comment,
-            'form' => $form->createView(),
-            'blog' => $blog,
-        ]);
-    }*/
-
     #[Route('/add', name: 'app_comment_add', methods: ['POST'])]
     public function addCommentAction(Request $request, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
@@ -124,14 +84,24 @@ final class CommentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_comment_delete', methods: ['POST'])]
-    public function delete(Request $request, Comment $comment, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'app_comment_delete', methods: ['POST'])]
+    public function deleteCommentAction(Request $request, EntityManagerInterface $entityManager, CommentRepository $commentRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->getPayload()->getString('_token'))) {
+        $id = $request->get('id');
+        $comment = $commentRepository->find($id);
+        //dd($comment);
+        if (!$comment) {
+            throw $this->createNotFoundException('Comment not found.');
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $comment->getId(), $request->request->get('_token'))) {
             $entityManager->remove($comment);
             $entityManager->flush();
         }
-
-        return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
+        else{
+            throw new InvalidCsrfTokenException('Invalid CSRF token.');
+        }
+        return $this->redirectToRoute('app_blog_page', ['id' => $comment->getBlog()->getId()]);
     }
+
 }

@@ -94,39 +94,6 @@ final class BlogController extends AbstractController
             'comments' => $comments,
         ]);
     }
-    /*#[Route('/{id<\d+>}', name: 'app_blog_page', methods: ['GET', 'POST'])]
-    public function page(Request $request, BlogRepository $blogRepository, CommentRepository $commentRepository, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager, int $id): Response
-    {
-        $blog = $blogRepository->find($id);
-        if (!$blog) {
-            throw $this->createNotFoundException('Blog not found');
-        }
-
-        $comments = $commentRepository->findByBlogAndAuthor($id);
-        $categories = $categoryRepository->findAll();
-
-        $comment = new Comment();
-        $user = $this->getUser();
-
-        $comment->setBlog($blog);
-        $comment->setUser($user);
-
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($comment);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_blog_page', ['id' => $blog->getId()]);
-        }
-
-        return $this->render('blog/page.html.twig', [
-            'blog' => $blog,
-            'comments' => $comments,
-            'categories' => $categories,
-            'form' => $form->createView(),
-        ]);
-    }*/
 
     #[Route('/{id<\d+>}', name: 'app_blog_page', methods: ['GET'])]
     public function page(BlogRepository $blogRepository, CommentRepository $commentRepository, CategoryRepository $categoryRepository, int $id): Response
@@ -163,7 +130,7 @@ final class BlogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            return $this->redirectToRoute('app_blog_homepage', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_blog_my_blogs', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('blog/edit.html.twig', [
@@ -175,12 +142,14 @@ final class BlogController extends AbstractController
     #[Route('/{id}/delete', name: 'app_blog_delete', methods: ['POST'])]
     public function delete(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response
     {
+        //service.authorised
+
         if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->request->get('_token'))) {
             $entityManager->remove($blog);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_blog_homepage', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_blog_my_blogs', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/homepage/about', name: 'app_blog_about', methods: ['GET'])]

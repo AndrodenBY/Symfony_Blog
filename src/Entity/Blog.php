@@ -27,7 +27,7 @@ class Blog
     #[ORM\Column(type: Types::TEXT)]
     private ?string $text = null;
 
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'blogs',)]
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'blogs', cascade: ['remove'], orphanRemoval: true,)]
     #[ORM\JoinTable(name: 'blog_categories')]
     private ?Collection $categories;
 
