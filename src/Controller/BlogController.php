@@ -70,7 +70,7 @@ final class BlogController extends AbstractController
             $entityManager->persist($blog);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_blog_homepage', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_blog_my_blogs', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('blog/new.html.twig', [
@@ -143,6 +143,13 @@ final class BlogController extends AbstractController
     public function delete(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response
     {
         //service.authorised
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        if($blog->getUser()->getId() !== $user->getId()) {
+            return $this->redirectToRoute('app_blog_my_blogs', [], Response::HTTP_SEE_OTHER);
+        }
 
         if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->request->get('_token'))) {
             $entityManager->remove($blog);
@@ -188,7 +195,7 @@ final class BlogController extends AbstractController
     public function search(Request $request, BlogRepository $blogRepository): Response
     {
         $query = $request->query->get('q');
-        $blogs = $blogRepository->searchByQuery($query);
+        $blogs = $blogRepository->searchByTitle($query);
 
         return $this->render('blog/search_query.html.twig', [
             'blogs' => $blogs

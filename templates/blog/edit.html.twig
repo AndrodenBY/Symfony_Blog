@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit Blog{% endblock %}
-
+{% block navbar %}{% endblock %}
 {% block body %}
 
     {{ include('blog/_form.html.twig', {'button_label': 'Save Changes'}) }}
 
 {% endblock %}
+{% block footer %}{% endblock %}

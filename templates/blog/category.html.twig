@@ -1,38 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Blogs in {{ category }}{% endblock %}
-
+{% block navbar_buttons %}
+    <li class="nav-item"><a class="nav-link" href="{{ path('app_blog_about') }}">About</a></li>
+    {% if app.user %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_blog_my_blogs') }}">My Blogs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_logout') }}">Log out</a>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_login') }}">Log in</a>
+        </li>
+    {% endif %}
+{% endblock %}
 {% block body %}
     <div class="d-flex flex-column min-vh-100">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="border-radius: 15px; margin-top: 10px;">
-            <div class="container">
-                <a class="navbar-brand" href="{{ path('app_blog_homepage') }}">Blog</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <form class="d-flex ms-3" role="search" action="{{ path('app_blog_search') }}" method="GET">
-                    <input class="form-control me-2" type="search" name="q" placeholder="Search..." aria-label="Search" style="border-radius: 20px">
-                    <button class="btn btn-outline-light" type="submit" style="border-radius: 20px">Find</button>
-                </form>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="{{ path('app_blog_about') }}">About</a></li>
-                        {% if app.user %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_blog_new') }}">New Blog</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_logout') }}">Log out</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_login') }}">Log in</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
+
         <h1 style="margin: 10px">{{ category }}</h1>
         {% if blogs is empty %}
             <p>No blogs found for this category.</p>
@@ -54,13 +40,6 @@
                 {% endfor %}
             </div>
         {% endif %}
-        <!-- Footer-->
-        <footer class="py-5 bg-dark mt-auto" style="border-radius: 15px; margin-bottom: 10px;">
-            <div class="container">
-                <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
-            </div>
-        </footer>
     </div> <!-- End of flex container -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('script.js') }}"></script>
+
 {% endblock %}

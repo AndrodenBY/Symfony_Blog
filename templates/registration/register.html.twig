@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Registration{% endblock %}
+{% block navbar %}{% endblock %}
 {% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
@@ -32,11 +33,11 @@
     <div class="form-check mb-3">
         {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
         <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
-            I agree to the terms and conditions
         </label>
     </div>
     <button type="submit" class="btn btn-primary btn-block">Register</button>
     {{ form_end(registrationForm) }}
     <br>
     <p>Do you already have an email? </p><a href="{{ path('app_login') }}">Click here to login</a>
+    {% block footer %}{% endblock %}
 {% endblock %}

@@ -16,7 +16,7 @@ class BlogRepository extends ServiceEntityRepository
         parent::__construct($registry, Blog::class);
     }
 
-    public function searchByQuery(string $query) //переименуй на searchByTitle
+    public function searchByTitle(string $query)
     {
         return $this->createQueryBuilder('blog')
             ->where('blog.title LIKE :query')
