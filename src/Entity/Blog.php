@@ -27,7 +27,7 @@ class Blog
     #[ORM\Column(type: Types::TEXT)]
     private ?string $text = null;
 
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'blogs', cascade: ['remove'], orphanRemoval: true,)]
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'blogs',)]
     #[ORM\JoinTable(name: 'blog_categories')]
     private ?Collection $categories;
 
@@ -45,7 +45,7 @@ class Blog
      * @var ?Collection<int, Comment>
      */
     #[Ignore]
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'blog')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'blog',  cascade: ['remove'], orphanRemoval: true,)]
     private ?Collection $comments = null;
 
     public function __construct()

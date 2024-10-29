@@ -18,9 +18,19 @@ class CommentRepository extends ServiceEntityRepository
 
     public function findByBlogAndAuthor($blogId)
     {
-        return $this->createQueryBuilder('c')
+        return $this->createQueryBuilder('comment')
             ->where('c.blog = :blogId')
             ->setParameter('blogId', $blogId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByAuthor(string $author)
+    {
+        return $this->createQueryBuilder('comment')
+            ->join('comment.user', 'user')
+            ->where('user.username = :user')
+            ->setParameter('user', $author)
             ->getQuery()
             ->getResult();
     }

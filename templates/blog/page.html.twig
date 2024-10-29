@@ -31,7 +31,7 @@
                         <!-- Blog title-->
                         <h1 class="fw-bolder mb-1">{{blog.title}}</h1>
                         <!-- Blog meta content-->
-                        <div class="text-muted fst-italic mb-2">Posted by {{ blog.user.email }}</div>
+                        <div class="text-muted fst-italic mb-2">Posted by <a href="{{ path('app_user_profile', {'id': blog.user.id}) }}">{{ blog.user.email }}</a></div>
                         <div class="small text-muted">{{ blog.publishedAt|date('F j, Y') }}</div>
                         <!-- Blog categories-->
                         {% for category in blogCategories %}

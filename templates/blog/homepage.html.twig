@@ -1,7 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Blog index{% endblock %}
-
+{% block navbar_buttons %}
+    {% if app.user %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_user_profile', {'id': user.id}) }}">{{ user.username }}</a>
+        </li>
+    {{ parent() }}
+    {% else %}
+    {% endif %}
+{% endblock %}
 {% block body %}
     <body>
     <!-- Page header with logo and tagline-->

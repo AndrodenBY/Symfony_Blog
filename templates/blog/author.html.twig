@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blogs by {{ user }}{% endblock %}
+{% block navbar_buttons %}
+    <li class="nav-item"><a class="nav-link" href="{{ path('app_blog_about') }}">About</a></li>
+    {% if app.user %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_blog_my_blogs') }}">My Blogs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_logout') }}">Log out</a>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_login') }}">Log in</a>
+        </li>
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <div class="d-flex flex-column min-vh-100">
+
+        <h1 style="margin: 10px">Blogs by {{ user }}</h1>
+        {% if blogs is empty %}
+            <p>No blogs have been written by this author.</p>
+        {% else %}
+            <div class="row">
+                {% for blog in blogs %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <a href="{{ path('app_blog_show', {'id': blog.id}) }}">
+                                <img class="card-img-top" src="{{ blog.image }}" alt="{{ blog.title }}">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ blog.title }}</h5>
+                                <p class="card-text">{{ blog.description }}</p>
+                                <a href="{{ path('app_blog_page', {'id': blog.id}) }}" class="btn btn-primary">Read more</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div> <!-- End of flex container -->
+
+{% endblock %}

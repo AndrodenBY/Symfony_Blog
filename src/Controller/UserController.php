@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\AuthorType;
+use App\Repository\BlogRepository;
+use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,11 +45,23 @@ final class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
+    #[Route('/{id}/show', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
         return $this->render('user/show.html.twig', [
             'user' => $user,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_user_profile', methods: ['GET'])]
+    public function profile(User $user, BlogRepository $blogRepository, CommentRepository $commentRepository): Response
+    {
+        $userBlogs = count($blogRepository->findByAuthor($user->getUsername()));
+        $userComments = count($commentRepository->findByAuthor($user->getUsername()));
+        return $this->render('user/profile.html.twig', [
+            'user' => $user,
+            'blogs' => $userBlogs,
+            'comments' => $userComments,
         ]);
     }
 

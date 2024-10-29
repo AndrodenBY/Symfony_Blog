@@ -26,8 +26,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 final class BlogController extends AbstractController
 {
     #[Route(name: 'app_blog_homepage', methods: ['GET'])]
-    public function index(BlogRepository $blogRepository, CategoryRepository $categoryRepository): Response
+    public function index(BlogRepository $blogRepository, CategoryRepository $categoryRepository, UserRepository $userRepository): Response
     {
+        $user = $userRepository->find($this->getUser());
         $blogs = $blogRepository->findAll();
         $categories = $categoryRepository->findAll();
         //dd($blogs);
@@ -40,6 +41,7 @@ final class BlogController extends AbstractController
         return $this->render('blog/homepage.html.twig', [
             'blogs' => $blogs,
             'categories' => $categories,
+            'user' => $user,
         ]);
     }
 
@@ -160,9 +162,13 @@ final class BlogController extends AbstractController
     }
 
     #[Route('/homepage/about', name: 'app_blog_about', methods: ['GET'])]
-    public function about(BlogRepository $blogRepository): Response
+    public function about(CategoryRepository $categoryRepository): Response
     {
-        return $this->render('blog/about.html.twig');
+        $categories = $categoryRepository->findAll();
+        return $this->render('blog/about.html.twig',
+        [
+            'categories' => $categories,
+        ]);
     }
 
     #[Route('/my-blogs', name: 'app_blog_my_blogs', methods: ['GET'])]
@@ -180,7 +186,7 @@ final class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/blog/category/{category}', name: 'app_blog_category')]
+    #[Route('/category/{category}', name: 'app_blog_category')]
     public function findByCategory(string $category, BlogRepository $blogRepository): Response
     {
         $blogs = $blogRepository->findByCategory($category);
@@ -199,6 +205,16 @@ final class BlogController extends AbstractController
 
         return $this->render('blog/search_query.html.twig', [
             'blogs' => $blogs
+        ]);
+    }
+
+    #[Route('/author/{user}', name: 'app_blog_by_author', methods: ['GET'])]
+    public function findByAuthor(string $user, BlogRepository $blogRepository): Response
+    {
+        $blogs = $blogRepository->findByAuthor($user);
+        return $this->render('blog/author.html.twig', [
+            'blogs' => $blogs,
+            'user' => $user,
         ]);
     }
 }
