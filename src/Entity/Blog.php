@@ -35,7 +35,7 @@ class Blog
     private ?\DateTime $publishedAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?string $image = 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg';
+    private ?string $image = 'blog-preview.jpg';
 
     #[ORM\ManyToOne(inversedBy: 'blogs')]
     #[ORM\JoinColumn(nullable: true)]
@@ -52,6 +52,7 @@ class Blog
     {
         $this->comments = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        //$this->image = 'blog-preview.jpg';
     }
 
     public function getId(): ?int

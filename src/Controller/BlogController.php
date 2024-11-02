@@ -18,7 +18,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -46,7 +49,8 @@ final class BlogController extends AbstractController
     }
 
     #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,
+                        CategoryRepository $categoryRepository, KernelInterface $kernel): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -69,6 +73,12 @@ final class BlogController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFile = $form->get('image')->getData();
+            $file = $uploadedFile->move(
+                $kernel->getProjectDir() .'/public/uploads',
+                $uploadedFile->getClientOriginalName());
+
+            $blog->setImage($file->getBasename());
             $entityManager->persist($blog);
             $entityManager->flush();
 
@@ -81,9 +91,14 @@ final class BlogController extends AbstractController
         ]);
     }
 
+    #[ISGranted('ROLE_ADMIN')]
     #[Route('/showId={id}', name: 'app_blog_show', methods: ['GET'])]
     public function show(BlogRepository $blogRepository, CommentRepository $commentRepository, int $id): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_access_denied');
+        } //FIX
+
         $blog = $blogRepository->find($id);
         if (!$blog) {
             throw $this->createNotFoundException('Blog not found');
@@ -125,12 +140,18 @@ final class BlogController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'app_blog_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager, KernelInterface $kernel ): Response
     {
         $form = $this->createForm(BlogType::class, $blog);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFile = $form->get('image')->getData();
+            $file = $uploadedFile->move(
+                $kernel->getProjectDir() .'/public/uploads',
+                $uploadedFile->getClientOriginalName());
+
+            $blog->setImage($file->getBasename());
             $entityManager->flush();
             return $this->redirectToRoute('app_blog_my_blogs', [], Response::HTTP_SEE_OTHER);
         }
@@ -217,4 +238,6 @@ final class BlogController extends AbstractController
             'user' => $user,
         ]);
     }
+
+
 }

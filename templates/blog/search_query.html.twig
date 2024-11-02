@@ -30,7 +30,9 @@
                         <div class="col-md-4 mb-4"> <!-- Card column -->
                             <div class="card">
                                 <a href="{{ path('app_blog_page', {id: blog.id}) }}">
-                                    <img class="card-img-top" src={{ blog.image }} alt="{{ blog.title }}" />
+                                    {% if blog.image is not empty %}
+                                        <img class="card-img-top" src={{ asset('uploads/' ~ blog.image|default('blog-preview.jpg'))}} alt="{{ blog.title }}" />
+                                    {% endif %}
                                 </a>
                                 <div class="card-body">
                                     <h2 class="card-title h4">{{ blog.title }}</h2>

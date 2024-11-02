@@ -19,6 +19,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType as SymfonyTextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -48,15 +51,43 @@ class BlogType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('image', SymfonyTextType::class, [
+            /*->add('image', SymfonyTextType::class, [
                 'required' => false,
                 'label' => 'Image URL',
                 'attr' => ['placeholder' => 'Enter image URL']
-            ])
-            /*->add('imageFile', FileType::class, [
+            ])*/
+            ->add('image', FileType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Image is required']),
+                    new Assert\Image([
+                        'maxSize' => '2000k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp'
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image (JPG, PNG, or WEBP)',
+                    ]),
+                ],
                 'required' => false,
                 'label' => 'Upload Image',
+            ])
+            /*->add('image', FileType::class, [
                 'mapped' => false,
+                'constraints' => [new NotBlank(['message' => 'Image is required']),
+                    'attr ' => 'image/jpg, image/png, image/webp',
+                    new Image([ //namespace for File?
+                        'maxSize' => '2000k',
+                         'mimeTypes' => [
+                             'image/jpg',
+                             'image/png',
+                             'image/webp '
+                         ]
+                    ])],
+                'required' => false,
+                'label' => 'Upload Image',
+
             ])*/
             ->add('user', EntityType::class, [
                 'class' => User::class,

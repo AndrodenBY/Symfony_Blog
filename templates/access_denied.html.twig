@@ -1,0 +1,24 @@
+
+{% block body %}
+
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-12 col-xl-4">
+
+                    <div class="card" style="border-radius: 15px;">
+                        <div class="card-body text-center">
+                            <h4 class="mb-2">Access Denied</h4>
+                            <p class="text-muted mb-4">Can only be accessed by admin</p>
+
+                            <a  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-rounded btn-lg" href="{{ path('app_blog_homepage')}}">
+                                Homepage
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
