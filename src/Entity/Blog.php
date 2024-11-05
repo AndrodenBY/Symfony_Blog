@@ -35,7 +35,7 @@ class Blog
     private ?\DateTime $publishedAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?string $image = 'blog-preview.jpg';
+    private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'blogs')]
     #[ORM\JoinColumn(nullable: true)]

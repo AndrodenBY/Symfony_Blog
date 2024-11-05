@@ -14,6 +14,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use mysql_xdevapi\Result;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormErrorIterator;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,18 +74,29 @@ final class BlogController extends AbstractController
         ]);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $uploadedFile = $form->get('image')->getData();
-            $file = $uploadedFile->move(
-                $kernel->getProjectDir() .'/public/uploads',
-                $uploadedFile->getClientOriginalName());
+        if ($form->isSubmitted())
+        {
 
-            $blog->setImage($file->getBasename());
-            $entityManager->persist($blog);
-            $entityManager->flush();
+            if($form->isValid()) {
+                $uploadedFile = $form->get('image')->getData();
 
-            return $this->redirectToRoute('app_blog_my_blogs', [], Response::HTTP_SEE_OTHER);
+                if(!empty($uploadedFile)) {
+                    $file = $uploadedFile->move(
+                        $kernel->getProjectDir() .'/public/uploads',
+                        $uploadedFile->getClientOriginalName());
+
+                    $blog->setImage($file->getBasename());
+                }
+                $entityManager->persist($blog);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_blog_my_blogs', [], Response::HTTP_SEE_OTHER);
+            } else {
+                $errors = $this->getErrorMessages($form);
+                dd($errors);
+            }
         }
+
 
         return $this->render('blog/new.html.twig', [
             'blog' => $blog,
@@ -239,5 +252,40 @@ final class BlogController extends AbstractController
         ]);
     }
 
+    public function getErrorMessages(FormInterface $form)
+    {
+        $arErrors = [];
+        $formErrors = $form->getErrors(true, false);
+        foreach ($formErrors as $formError) {
+            if ($formError instanceof FormErrorIterator) {
+                $subForm = $formError->getForm();
+                $key = $subForm->getName();
+                $subErrors = $this->getErrorSubMessages($subForm);
+                $arErrors[$key] = $subErrors;
+            } else {
+                $key = $formError->getOrigin()->getName();
+                $arErrors[$key] = $formError->getMessage();
+            }
+        }
 
+        return $arErrors;
+    }
+
+    protected function getErrorSubMessages(FormInterface $form)
+    {
+        $arErrors = [];
+        $formErrors = $form->getErrors(true, false);
+        foreach ($formErrors as $formError) {
+            if ($formError instanceof FormErrorIterator) {
+                $subForm = $formError->getForm();
+                $key = $subForm->getName();
+                $subErrors = $this->getErrorSubMessages($subForm);
+                $arErrors[$key] = $subErrors;
+            } else {
+                return $formError->getMessage();
+            }
+        }
+
+        return $arErrors;
+    }
 }

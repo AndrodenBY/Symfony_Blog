@@ -44,9 +44,7 @@
                             {% for blog in blogs %}
                                 {% if loop.index <= 3 %}
                                 <div class="card" style="margin-bottom: 20px">
-                                    {% if blog.image is not empty %}
                                     <a href="#!"><img class="card-img-top" src={{ asset('uploads/' ~ blog.image|default('blog-preview.jpg')) }} alt="..." /></a>
-                                        {% endif %}
                                     <div class="card-body">
                                         <div class="small text-muted">{{ blog.publishedAt|date('F j, Y') }}</div>
                                         <div class="small text-muted">By {{ blog.user.email }}</div>
@@ -71,9 +69,7 @@
                             {% for blog in blogs %}
                                 {% if loop.index > 3 and loop.index <= 6 %}
                                     <div class="card" style="margin-bottom: 20px">
-                                        {% if blog.image is not empty %}
                                             <a href="#!"><img class="card-img-top" src={{ asset('uploads/' ~ blog.image|default('blog-preview.jpg')) }} alt="..." /></a>
-                                        {% endif %}
                                         <div class="card-body">
                                             <div class="small text-muted">{{ blog.publishedAt|date('F j, Y') }}</div>
                                             <div class="small text-muted">By {{ blog.user.email }}</div>
@@ -91,6 +87,7 @@
                                 {% endif %}
                             {% endfor %}
                     </div>
+                </div>
                 </div>
                 <!-- Pagination-->
                 <nav aria-label="Pagination">
@@ -134,3 +131,4 @@
     </div>
     </body>
 {% endblock %}
+
