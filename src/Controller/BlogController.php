@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Blog;
 use App\Entity\Comment;
+use App\Form\BlogFilterType;
 use App\Form\BlogType;
 use App\Form\CommentType;
 use App\Repository\CategoryRepository;
@@ -11,7 +12,9 @@ use App\Repository\UserRepository;
 use App\Repository\BlogRepository;
 use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use mysql_xdevapi\Result;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormErrorIterator;
@@ -31,17 +34,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 final class BlogController extends AbstractController
 {
     #[Route(name: 'app_blog_homepage', methods: ['GET'])]
-    public function index(BlogRepository $blogRepository, CategoryRepository $categoryRepository, UserRepository $userRepository): Response
+    public function index(Request $request, BlogRepository $blogRepository,
+                          CategoryRepository $categoryRepository, EntityManagerInterface $entityManager,
+                          UserRepository $userRepository, PaginatorInterface $paginator): Response
     {
         $user = $userRepository->find($this->getUser());
-        $blogs = $blogRepository->findAll();
         $categories = $categoryRepository->findAll();
-        //dd($blogs);
-        foreach ($blogs as $blog) {
-            if (!($blog->getCategories() instanceof Collection)) {
-                throw new \Exception('Categories is not a Collection');
-            }
-        }
+
+        $page = max($request->query->get('page', 1), 1);
+        $limit = 6;
+
+        $dql = "SELECT a FROM App\Entity\Blog a ORDER BY a.id DESC";
+        $query = $entityManager->createQuery($dql);
+        $blogs = $paginator->paginate(
+            $query,
+            $page,
+            $limit,
+        );
 
         return $this->render('blog/homepage.html.twig', [
             'blogs' => $blogs,
@@ -158,7 +167,7 @@ final class BlogController extends AbstractController
         $form = $this->createForm(BlogType::class, $blog);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && !empty($uploadedFile)) {
             $uploadedFile = $form->get('image')->getData();
             $file = $uploadedFile->move(
                 $kernel->getProjectDir() .'/public/uploads',
@@ -252,40 +261,4 @@ final class BlogController extends AbstractController
         ]);
     }
 
-    public function getErrorMessages(FormInterface $form)
-    {
-        $arErrors = [];
-        $formErrors = $form->getErrors(true, false);
-        foreach ($formErrors as $formError) {
-            if ($formError instanceof FormErrorIterator) {
-                $subForm = $formError->getForm();
-                $key = $subForm->getName();
-                $subErrors = $this->getErrorSubMessages($subForm);
-                $arErrors[$key] = $subErrors;
-            } else {
-                $key = $formError->getOrigin()->getName();
-                $arErrors[$key] = $formError->getMessage();
-            }
-        }
-
-        return $arErrors;
-    }
-
-    protected function getErrorSubMessages(FormInterface $form)
-    {
-        $arErrors = [];
-        $formErrors = $form->getErrors(true, false);
-        foreach ($formErrors as $formError) {
-            if ($formError instanceof FormErrorIterator) {
-                $subForm = $formError->getForm();
-                $key = $subForm->getName();
-                $subErrors = $this->getErrorSubMessages($subForm);
-                $arErrors[$key] = $subErrors;
-            } else {
-                return $formError->getMessage();
-            }
-        }
-
-        return $arErrors;
-    }
 }

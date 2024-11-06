@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Blog;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -44,7 +46,6 @@ class BlogRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 
     //    /**
     //     * @return Blog[] Returns an array of Blog objects
