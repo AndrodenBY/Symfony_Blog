@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a057c36-d3a2-4095-9741-200ca5958ef3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/public/uploads/pepe-icon.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/phpspec.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/phpspec.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/third_project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/third_project.iml" afterDir="false" />
@@ -16,11 +17,13 @@
       <change beforePath="$PROJECT_DIR$/src/Controller/CommentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CommentController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/MailerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MailerController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Blog.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Blog.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Form/AuthorType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AuthorType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Form/BlogType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/BlogType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/blog/author.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/author.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/blog/category.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/category.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/blog/page.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/page.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/search_query.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/search_query.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/user/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/_delete_form.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/user/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/_form.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/edit.html.twig" afterDir="false" />
@@ -271,7 +274,7 @@
       <workItem from="1729503246657" duration="14332000" />
       <workItem from="1729686646271" duration="56975000" />
       <workItem from="1730824627322" duration="16890000" />
-      <workItem from="1730937227366" duration="2563000" />
+      <workItem from="1730937227366" duration="3019000" />
     </task>
     <servers />
   </component>
