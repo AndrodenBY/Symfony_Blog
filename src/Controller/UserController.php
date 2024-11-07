@@ -11,10 +11,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/user')]
+#[Route(path: '/user')]
 final class UserController extends AbstractController
 {
     #[ISGranted('ROLE_ADMIN')]
@@ -28,7 +29,7 @@ final class UserController extends AbstractController
     }
 
     #[ISGranted('ROLE_ADMIN')]
-    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -49,7 +50,7 @@ final class UserController extends AbstractController
     }
 
     #[ISGranted('ROLE_ADMIN')]
-    #[Route('/{id}/show', name: 'app_user_show', methods: ['GET'])]
+    #[Route(path: '/{id}/show', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
         return $this->render('user/show.html.twig', [
@@ -57,7 +58,7 @@ final class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_profile', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'app_user_profile', methods: ['GET'])]
     public function profile(User $user, BlogRepository $blogRepository, CommentRepository $commentRepository): Response
     {
         $userBlogs = count($blogRepository->findByAuthor($user->getUsername()));
@@ -69,17 +70,32 @@ final class UserController extends AbstractController
         ]);
     }
 
-    #[ISGranted('ROLE_ADMIN')]
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    //#[ISGranted('ROLE_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager,
+                         KernelInterface $kernel): Response
     {
-        $form = $this->createForm(AuthorType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($user->getId() == $this->getUser()->getId()) {
+            $form = $this->createForm(AuthorType::class, $user);
+            $form->handleRequest($request);
+        }
+        else{
+            return $this->redirectToRoute('app_access_denied', [], Response::HTTP_SEE_OTHER);
+        }
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $uploadedFile = $form->get('icon')->getData();
+            if($uploadedFile) {
+                $file = $uploadedFile->move(
+                    $kernel->getProjectDir() .'/public/uploads',
+                    $uploadedFile->getClientOriginalName());
+                $user->setIcon($file->getBasename());
+            }
+            $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_profile', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
+
         }
 
         return $this->render('user/edit.html.twig', [
@@ -89,7 +105,7 @@ final class UserController extends AbstractController
     }
 
     #[ISGranted('ROLE_ADMIN')]
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
+    #[Route(path: '/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->getPayload()->getString('_token'))) {
@@ -100,7 +116,7 @@ final class UserController extends AbstractController
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/access-denied', name: 'app_access_denied')] //FIX
+    #[Route(path: '/access-denied', name: 'app_access_denied')] //FIX
     public function accessDenied(UserRepository $userRepository): Response
     {
         return $this->render('access_denied.html.twig');

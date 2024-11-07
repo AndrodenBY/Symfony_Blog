@@ -53,34 +53,14 @@ class BlogType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'form-control'],
             ])
-            /*->add('image', SymfonyTextType::class, [
-                'required' => false,
-                'label' => 'Image URL',
-                'attr' => ['placeholder' => 'Enter image URL']
-            ])*/
-            /*->add('image', FileType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new Assert\Image([
-                        'maxSize' => '2000k',
-                        'mimeTypes' => [
-                            'image/jpg',
-                            'image/png',
-                            'image/webp'
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid image (JPG, PNG, or WEBP)',
-                    ]),
-                ],
-                'required' => false,
-                'label' => 'Upload Image',
-            ])*/
             ->add('image', FileType::class, [
                 'mapped' => false,
                 'constraints' => [
-                    new Image([ //namespace for File?
+                    new Image([
                         'maxSize' => '2000k',
                          'mimeTypes' => [
                              'image/jpg',
+                             'image/jpeg',
                              'image/png',
                              'image/webp '
                          ]

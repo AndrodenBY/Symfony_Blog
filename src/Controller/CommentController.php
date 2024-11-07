@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Blog;
 use App\Entity\Comment;
 use App\Form\CommentType;
-use App\Repository\BlogRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +15,7 @@ use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route('/comment')]
+#[Route(path: '/comment')]
 final class CommentController extends AbstractController
 {
     #[Route(name: 'app_comment_index', methods: ['GET'])]
@@ -27,7 +26,7 @@ final class CommentController extends AbstractController
         ]);
     }
 
-    #[Route('/add', name: 'app_comment_add', methods: ['POST'])]
+    #[Route(path: '/add', name: 'app_comment_add', methods: ['POST'])]
     public function addCommentAction(Request $request, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
         $user = $this->getUser();
@@ -58,7 +57,7 @@ final class CommentController extends AbstractController
     }
 
 
-    #[Route('/{id}', name: 'app_comment_show', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'app_comment_show', methods: ['GET'])]
     public function show(Comment $comment): Response
     {
         return $this->render('comment/show.html.twig', [
@@ -66,7 +65,7 @@ final class CommentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_comment_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'app_comment_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Comment $comment, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CommentType::class, $comment);
@@ -84,7 +83,7 @@ final class CommentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/delete', name: 'app_comment_delete', methods: ['POST'])]
+    #[Route(path: '/{id}/delete', name: 'app_comment_delete', methods: ['POST'])]
     public function deleteCommentAction(Request $request, EntityManagerInterface $entityManager, CommentRepository $commentRepository): Response
     {
         $id = $request->get('id');

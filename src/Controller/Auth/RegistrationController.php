@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
 
     }
 
-    #[Route('/register', name: 'app_register')]
+    #[Route(path: '/register', name: 'app_register')]
     public function register(Request $request, UserAuthenticatorInterface $userAuthenticator,
                              UserPasswordHasherInterface $userPasswordHasher,
                              EntityManagerInterface $entityManager, AppAuthenticator $authenticator): Response
@@ -61,7 +61,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
+    #[Route(path: '/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');

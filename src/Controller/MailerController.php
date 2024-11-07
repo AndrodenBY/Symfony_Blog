@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MailerController extends AbstractController
 {
-    #[Route('/send-email', name: 'app_send_email')]
+    #[Route(path: '/send-email', name: 'app_send_email')]
     public function index(MailerInterface $mailer): Response
     {
         $email = (new Email())

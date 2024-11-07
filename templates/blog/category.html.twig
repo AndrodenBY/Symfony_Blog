@@ -27,10 +27,7 @@
                 {% for blog in blogs %}
                     <div class="col-md-4 mb-4">
                         <div class="card">
-                            <a href="{{ path('app_blog_show', {'id': blog.id}) }}">
-                                {% if blog.image is not empty %}
                                     <img class="card-img-top" src={{ asset('uploads/' ~ blog.image|default('blog-preview.jpg'))}} alt="{{ blog.title }}" />
-                                {% endif %}
                             </a>
                             <div class="card-body">
                                 <h5 class="card-title">{{ blog.title }}</h5>

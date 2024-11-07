@@ -3,12 +3,11 @@
 namespace App\Form;
 
 use App\Entity\User;
-use App\Entity\Blog;
-use App\Repository\BlogRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
 
 class AuthorType extends AbstractType
 {
@@ -17,13 +16,23 @@ class AuthorType extends AbstractType
         $builder
             ->add('username')
             ->add('email')
-            ->add('password')
-            ->add('blogs', EntityType::class, [
-                'class' => Blog::class,
-                'choice_label' => 'title',
-                'multiple' => true,
-                'expanded' => true,
-            ]);
+            //->add('password') TODO
+            ->add('icon', FileType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '2000k',
+                        'mimeTypes' => [
+                            'image/jpg',
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp ',
+                        ]
+                    ])],
+                'required' => false,
+                'label' => 'Upload Icon',
+                'attr' => ['accept' => 'image/*'],
+            ] );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

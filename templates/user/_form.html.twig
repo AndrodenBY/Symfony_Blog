@@ -1,4 +1,17 @@
-{{ form_start(form) }}
+{% extends 'base.html.twig' %}
+
+{% block navbar_buttons %}
+        <li class="nav-item">
+            <a class="btn btn-outline-primary" href="{{ path('app_user_profile', {'id': user.id}) }}" style="margin-right: 10px">Profile</a>
+        </li>
+    <li class="nav-item">
+        <button type="submit" form="edit-user-form" class="btn btn-primary">{{ button_label|default('Save Changes') }}</button>
+    </li>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {'attr': {'id': 'edit-user-form'}}) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+    {% block footer %}{% endblock %}
+{% endblock %}
